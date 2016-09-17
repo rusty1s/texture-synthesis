@@ -1,7 +1,52 @@
 \section{Textursynthese}
 
 Die Textursynthese ist ein alternativer Ansatz für die Erstellung von Texturen, der es erlaubt auch ohne spezielle Vorkenntnisse qualitativ hochwertige Ergebnisse zu erzielen.
-Der Benutzer muss lediglich ein Beispielmuster und eventuell benötigte Konfigurationsparameter an die Textursynthese übergeben, die aus diesen Daten eine Textur synthetisiert.
+Der Benutzer muss lediglich ein Beispielmuster und eventuell benötigte Konfigurationsparameter an die Textursynthese übergeben, die aus diesen Daten eine Textur synthetisiert \cite{StateOfTheArt}.
 Die resultierende Textur zeichnet sich dadurch aus, dass sie eine beliebige Größe annehmen kann, aber weiterhin sichtbare Ähnlichkeiten zu dem Beispielmuster aufweist.
 Die Textursynthese kümmert sich dabei automatisiert und im Idealfall ohne aufwändige Benutzereingaben um die Schwierigkeiten bei der Erstellung von Texturen.
 Sie berücksichtigt die visuellen Charakteristiken des Beispielmusters und vermeidet dabei zeitgleich auffällige Wiederholungen oder Unnatürlichkeiten in der synthetisierten Textur.
+
+\subsection{\glqq Markov Random Fields\grqq -Eigenschaft}
+
+Die \glqq Markov Random Field\grqq -Eigenschaft ist eine der populärsten Eigenschaften, die der Textursynthese zu Grunde liegt \cite{StateOfTheArt}.
+Sie motiviert die Metrik, die Verwendung findet, um die Ähnlichkeit zwischen dem Beispielmuster und der zu synthetisierenden Textur zu beschreiben \cite{TexturOptimization}.
+Die \glqq Markov Random Field\grqq -Eigenschaft beschreibt dabei die Synthese als eine Aneinanderreihung von \emph{lokalen} und {stationären} Prozessen \cite{StateOfTheArt}.
+Das bedeutet, dass jede Farbe eines Pixels in der Textur ausschließlich über die Pixel in seiner direkten räumlichen Nachbarschaft charakterisiert werden kann (lokal).
+Diese Charakterisierung ist dabei unabhängig von der Position des betrachteten Pixels (stationär) \cite{TexturOptimization}.
+Die Intuition dieser Eigenschaft lässt sich anhand von Beispielen verdeutlichen \todo{abbildung ref mrf}.
+Einem Betrachter liegt ein Bild vor, welches er aber nur durch ein kleines bewegliches Fenster betrachten kann.
+Er sieht demnach nie das komplette Bild auf einmal, kann aber durch Bewegungen seines Fensters einzelne Bereiche des Bildes entdecken und erschließen.
+Das Bild ist dann stationär, falls das Bild unter verschiedenen Ausschnitten immer ähnlich zueinander erscheint (eine geeignete Fenstergröße vorausgesetzt).
+Das Bild ist lokal, falls jeder Pixel in der Mitte eines Fensters über die umliegenden Pixel bestimmt werden kann \cite{StateOfTheArt}.
+
+Basierend auf dieser Eigenschaft kann der Prozess der Textursynthese spezifiziert werden:
+Sei ein Beispielmuster gegeben.
+Dann lässt sich daraus eine Textur synthetisieren, sodass für jeden synthetisierten Pixel dessen räumliche Nachbarschaft zu mindestens einer Nachbarschaft im Beispielmuster ähnlich ist \cite{StateOfTheArt}.
+Die Größe der betrachteten Nachbarschaften ist dabei in der Regel ein benutzerdefinierter Parameter.
+Die Nachbarschaftssuche basiert in der Regel auf der kleinsten quadrierten farblichen Abweichung 
+
+\begin{equation}
+	\min d(\textbf{t}_i, \textbf{x}_j) = \lVert \textbf{t}_i - \textbf{x}_j \rVert^2\text{.}
+\end{equation}
+
+$\textbf{t}_i$ beziehungsweise $\textbf{x}_j$ beschreiben dabei die Farben einer Nachbarschaft der Größe $N \times N$ als Vektor um den Pixel $i$ in der Textur $T$ respektive um den Pixel $j$ in dem Beispielmuster $X$.
+Für jede Nachbarschaft $\textbf{t}_i$ ist dann seine ähnlichste Nachbarschaft $\textbf{x}_j$ im Beispielmuster gefunden, wenn $d(\textbf{t}_i, \textbf{x}_j)$ minimal \cite{TexturOptimization}.
+
+Aufgrund der Ähnlichkeiten zwischen lokalen Nachbarschaften im Beispielmuster und der Textur wird garantiert, dass die synthetisierte Textur Gemeinsamkeiten mit dem Beispielmuster aufweist \cite{StateOfTheArt}.
+
+\subsection{Verfahren}
+
+Der Großteil an jüngst veröffentlichten Algorithmen zur Textursynthese basiert auf der \glqq Markov Random Fields\grqq -Eigenschaft \cite{StateOfTheArt}.
+Diese Verfahren lassen sich in der Regel einer von zwei Kategorien zuordnen: den \emph{lokal wachsenden Verfahren} und den \emph{global optimierenden Verfahren}.
+Lokal wachsende Verfahren synthetisieren die Textur nach und nach über einzelne Pixel oder Regionen \cite{TexturOptimization}.
+Global optimierende Verfahren hingegen synthetisieren und optimieren die Textur iterativ als Ganzes auf Basis einer Zielfunktion \cite{SelfTuning}.
+Im Folgenden sollen drei Verfahren der beiden Kategorien näher betrachtet werden.
+
+\subsubsection{Pixelbasierte Textursynthese}
+
+Einer der ersten Ansätze der Textursynthese ist die pixelbasierte Textursynthese (vgl. \cite{EL99}).
+
+
+\subsubsection{Regionsbasierte Textursynthese}
+
+\subsubsection{Texturoptimierung}
