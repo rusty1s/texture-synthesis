@@ -1,6 +1,6 @@
 \section{Textursynthese}
 
-Die Textursynthese ist ein alternativer Ansatz für die Erstellung von Texturen, der es erlaubt auch ohne spezielle Vorkenntnisse qualitativ hochwertige Ergebnisse zu erzielen.
+Die \emph{Textursynthese} ist ein alternativer Ansatz für die Erstellung von Texturen, der es erlaubt auch ohne spezielle Vorkenntnisse qualitativ hochwertige Ergebnisse zu erzielen.
 Der Benutzer muss lediglich ein Beispielmuster und eventuell benötigte Konfigurationsparameter an die Textursynthese übergeben, die aus diesen Daten eine Textur synthetisiert \cite{StateOfTheArt}.
 Die resultierende Textur zeichnet sich dadurch aus, dass sie eine beliebige Größe annehmen kann, aber weiterhin sichtbare Ähnlichkeiten zu dem Beispielmuster aufweist.
 Die Textursynthese kümmert sich dabei automatisiert und im Idealfall ohne aufwändige Benutzereingaben um die Schwierigkeiten bei der Erstellung von Texturen.
@@ -26,6 +26,7 @@ Die Größe der betrachteten Nachbarschaften ist dabei in der Regel ein benutzer
 Die Nachbarschaftssuche basiert in der Regel auf der kleinsten quadrierten farblichen Abweichung 
 
 \begin{equation}
+	\label{nachbarschaftssuche}
 	\min d(\textbf{t}_i, \textbf{x}_j) = \lVert \textbf{t}_i - \textbf{x}_j \rVert^2\text{.}
 \end{equation}
 
@@ -44,9 +45,27 @@ Im Folgenden sollen drei Verfahren der beiden Kategorien näher betrachtet werde
 
 \subsubsection{Pixelbasierte Textursynthese}
 
-Einer der ersten Ansätze der Textursynthese ist die pixelbasierte Textursynthese (vgl. \cite{EL99}).
+Einer der ersten Ansätze der Textursynthese ist die \emph{pixelbasierte Textursynthese} (vgl. \cite{EL99}).
+Er fällt in die Kategorie der lokal wachsenden Verfahren.
+Sei ein Beispielmuster und eine Nachbarschaftsgröße gegeben, dann funktioniert die grundlegende Idee hinter diesem Algorithmus wie folgt:
 
+Die zu synthetisierende Textur wird zuerst initialisiert, indem eine kleine beliebige Region des Beispielmusters in die Mitte der Textur kopiert wird.
+Der Algorithmus berechnet dann sukzessive die einzelnen Pixelfarben der Textur kreisförmig um die initiale Region von innen nach außen.
+Abbildung \todo{abb} illustriert dieses Verfahren.
+Die Farbe eines aktuell betrachteten Pixels $p$ in der Textur wird dann über eine Nachbarschaftssuche im Beispielmuster ermittelt.
+Dazu wird zuerst ein Rahmen mit der Größe der Nachbarschaft um den Pixel $p$ gelegt (\todo{größe der nachbarschaft im beispiel}) und alle bereits gesetzten Pixel in diesem Rahmen gefunden.
+Auf Basis dieser gesetzten Pixel wird im Beispielmuster die ähnlichste Nachbarschaft auf Grundlage von (\ref{nachbarschaftssuche}) gefunden.
+Der Pixel $p$ erhält dann die Farbe des Pixels in der Mitte der ermittelten ähnlichsten Nachbarschaft im Beispielmuster.
+Dieser Vorgang wird solange wiederholt, bis alle Pixel der Textur gesetzt sind.
+
+Der Algorithmus \cite{EL99} ist relativ einfach zu verstehen sowie zu implementieren \cite{StateOfTheArt}.
+Er ist außerdem benutzerfreundlich, da dieser nur einen Konfigurationsparameter, die Nachbarschaftsgröße, übergeben muss \cite{EL99}.
+Die Wahl der Nachbarschaftsgröße ist jedoch nicht trivial.
+Fällt die Wahl der Nachbarschaftsgröße zu klein aus, so kann das Ergebnis zu zufällig wirken.
+Ist sie auf der anderen Seite zu groß, können sichtbare Wiederholungen entstehen oder es kommt zu Unnatürlichkeiten, da die Nachbarschaftssuche auf Grund ihrer Größe wohlmöglich keine geeigneten Kandidaten finden kann \cite{StateOfTheArt}.
 
 \subsubsection{Regionsbasierte Textursynthese}
+
+Ein weiterer Vertreter der lokal wachsenden Verfahren und eine Erweiterung der pixelbasierten Textursynthese ist die \emph{regionsbasierte Textursynthese}.
 
 \subsubsection{Texturoptimierung}
