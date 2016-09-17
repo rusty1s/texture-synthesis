@@ -1,9 +1,9 @@
 \section{Textursynthese}
 
-Die \emph{Textursynthese} ist ein alternativer Ansatz für die Erstellung von Texturen, der es erlaubt auch ohne spezielle Vorkenntnisse qualitativ hochwertige Ergebnisse zu erzielen.
+Die \emph{Textursynthese} ist ein alternativer Ansatz für die Erstellung von Texturen, der es erlaubt, auch ohne spezielle Vorkenntnisse, qualitativ hochwertige Ergebnisse zu erzielen.
 Der Benutzer muss lediglich ein Beispielmuster und eventuell benötigte Konfigurationsparameter an die Textursynthese übergeben, die aus diesen Daten eine Textur synthetisiert \cite{StateOfTheArt}.
-Die resultierende Textur zeichnet sich dadurch aus, dass sie eine beliebige Größe annehmen kann, aber weiterhin sichtbare Ähnlichkeiten zu dem Beispielmuster aufweist.
-Die Textursynthese kümmert sich dabei automatisiert und im Idealfall ohne aufwändige Benutzereingaben um die Schwierigkeiten bei der Erstellung von Texturen.
+Die resultierende Textur zeichnet sich dadurch aus, dass sie eine beliebige Größe annehmen kann, aber weiterhin sichtbare Ähnlichkeiten zu dem Beispielmuster aufweist ohne identisch zu ihm zu sein.
+Die Textursynthese kümmert sich dabei automatisiert und im Idealfall ohne technische Benutzereingaben um die Schwierigkeiten bei der Erstellung von Texturen.
 Sie berücksichtigt die visuellen Charakteristiken des Beispielmusters und vermeidet dabei zeitgleich auffällige Wiederholungen oder Unnatürlichkeiten in der synthetisierten Textur.
 
 \subsection{\glqq Markov Random Fields\grqq -Eigenschaft}
@@ -13,17 +13,66 @@ Sie motiviert die Metrik, die Verwendung findet, um die Ähnlichkeit zwischen de
 Die \glqq Markov Random Field\grqq -Eigenschaft beschreibt dabei die Synthese als eine Aneinanderreihung von \emph{lokalen} und {stationären} Prozessen \cite{StateOfTheArt}.
 Das bedeutet, dass jede Farbe eines Pixels in der Textur ausschließlich über die Pixel in seiner direkten räumlichen Nachbarschaft charakterisiert werden kann (lokal).
 Diese Charakterisierung ist dabei unabhängig von der Position des betrachteten Pixels (stationär) \cite{TexturOptimization}.
-Die Intuition dieser Eigenschaft lässt sich anhand von Beispielen verdeutlichen \todo{abbildung ref mrf}.
+Die Intuition dieser Eigenschaft lässt sich anhand von einem Beispiel verdeutlichen (vgl. Abbildung \ref{mrf}).
 Einem Betrachter liegt ein Bild vor, welches er aber nur durch ein kleines bewegliches Fenster betrachten kann.
 Er sieht demnach nie das komplette Bild auf einmal, kann aber durch Bewegungen seines Fensters einzelne Bereiche des Bildes entdecken und erschließen.
-Das Bild ist dann stationär, falls das Bild unter verschiedenen Ausschnitten immer ähnlich zueinander erscheint (eine geeignete Fenstergröße vorausgesetzt).
-Das Bild ist lokal, falls jeder Pixel in der Mitte eines Fensters über die umliegenden Pixel bestimmt werden kann \cite{StateOfTheArt}.
+Das Bild ist dann stationär, falls es unter verschiedenen Ausschnitten immer ähnlich erscheint (eine geeignete Fenstergröße vorausgesetzt).
+Das Bild ist lokal, falls jeder Pixel in der Mitte eines Fensters über die umliegenden Pixel in seinem Fenster bestimmt werden kann \cite{StateOfTheArt}.
 
-Basierend auf dieser Eigenschaft kann der Prozess der Textursynthese spezifiziert werden:
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.45\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{images/mrf-1}
+		\caption*{($a$)}
+		
+		\begin{subfigure}{0.45\textwidth}
+			\centering
+			\includegraphics[width=0.5\textwidth]{images/mrf-1-1}
+			\caption*{($a_1$)}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}{0.45\textwidth}
+			\centering
+			\includegraphics[width=0.5\textwidth]{images/mrf-1-2}
+			\caption*{($a_2$)}
+		\end{subfigure}
+		
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.45\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{images/mrf-2}
+		\caption*{($b$)}
+		
+		\begin{subfigure}{0.45\textwidth}
+			\centering
+			\includegraphics[width=0.5\textwidth]{images/mrf-2-1}
+			\caption*{($b_1$)}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}{0.45\textwidth}
+			\centering
+			\includegraphics[width=0.5\textwidth]{images/mrf-2-2}
+			\caption*{($b_2$)}
+		\end{subfigure}
+		
+	\end{subfigure}
+	
+	\caption{
+		($a$) ist ein generelles Bild während ($b$) eine Textur ist.
+		Ein bewegliches Fenster an zwei unterschiedlichen Positionen ist als rotes Quadrat in ($a$) und ($b$) gekennzeichnet.
+		Unterschiedliche Aussschnitte einer Textur sind sichtbar ähnlich zueinander sein ($b_1$, $b_2$).
+		Dies ist nicht der Fall für ein generelles Bild ($a_1$, $a_2$).
+	}
+	\label{mrf}
+\end{figure}
+
+Basierend auf dieser Eigenschaft kann der Prozess der Textursynthese spezifiziert werden.
 Sei ein Beispielmuster gegeben.
 Dann lässt sich daraus eine Textur synthetisieren, sodass für jeden synthetisierten Pixel dessen räumliche Nachbarschaft zu mindestens einer Nachbarschaft im Beispielmuster ähnlich ist \cite{StateOfTheArt}.
 Die Größe der betrachteten Nachbarschaften ist dabei in der Regel ein benutzerdefinierter Parameter.
-Die Nachbarschaftssuche basiert in der Regel auf der kleinsten quadrierten farblichen Abweichung 
+Die Nachbarschaftssuche basiert im Allgemeinen auf der kleinsten quadrierten farblichen Abweichung 
 
 \begin{equation}
 	\label{nachbarschaftssuche}
@@ -31,13 +80,13 @@ Die Nachbarschaftssuche basiert in der Regel auf der kleinsten quadrierten farbl
 \end{equation}
 
 $\textbf{t}_i$ beziehungsweise $\textbf{x}_j$ beschreiben dabei die Farben einer Nachbarschaft der Größe $N \times N$ als Vektor um den Pixel $i$ in der Textur $T$ respektive um den Pixel $j$ in dem Beispielmuster $X$.
-Für jede Nachbarschaft $\textbf{t}_i$ ist dann seine ähnlichste Nachbarschaft $\textbf{x}_j$ im Beispielmuster gefunden, wenn $d(\textbf{t}_i, \textbf{x}_j)$ minimal \cite{TexturOptimization}.
+Für jede Nachbarschaft $\textbf{t}_i$ ist dann ihre ähnlichste Nachbarschaft $\textbf{x}_j$ im Beispielmuster gefunden, wenn $d(\textbf{t}_i, \textbf{x}_j)$ minimal ist \cite{TexturOptimization}.
 
 Aufgrund der Ähnlichkeiten zwischen lokalen Nachbarschaften im Beispielmuster und der Textur wird garantiert, dass die synthetisierte Textur Gemeinsamkeiten mit dem Beispielmuster aufweist \cite{StateOfTheArt}.
 
 \subsection{Verfahren}
 
-Der Großteil an jüngst veröffentlichten Algorithmen zur Textursynthese basiert auf der \glqq Markov Random Fields\grqq -Eigenschaft \cite{StateOfTheArt}.
+Der Großteil an veröffentlichten Algorithmen zur Textursynthese basiert auf der \glqq Markov Random Fields\grqq -Eigenschaft \cite{StateOfTheArt}.
 Diese Verfahren lassen sich in der Regel einer von zwei Kategorien zuordnen: den \emph{lokal wachsenden Verfahren} und den \emph{global optimierenden Verfahren}.
 Lokal wachsende Verfahren synthetisieren die Textur nach und nach über einzelne Pixel oder Regionen \cite{TexturOptimization}.
 Global optimierende Verfahren hingegen synthetisieren und optimieren die Textur iterativ als Ganzes auf Basis einer Zielfunktion \cite{SelfTuning}.
@@ -47,15 +96,25 @@ Im Folgenden sollen drei Verfahren der beiden Kategorien näher betrachtet werde
 
 Einer der ersten Ansätze der Textursynthese ist die \emph{pixelbasierte Textursynthese} (vgl. \cite{EL99}).
 Er fällt in die Kategorie der lokal wachsenden Verfahren.
-Sei ein Beispielmuster und eine Nachbarschaftsgröße gegeben, dann funktioniert die grundlegende Idee hinter diesem Algorithmus wie folgt:
+Sei ein Beispielmuster und eine Nachbarschaftsgröße gegeben, dann funktioniert die grundlegende Idee hinter diesem Algorithmus wie folgt.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.85\textwidth]{images/pixelbased}
+	\caption{
+		Der Algorithmus von \cite{EL99}.
+		Aus einem Beispielmuster (links) wird zuerst eine initiale Textur erstellt, indem eine kleine Region aus dem Beispielmuster in diese kopiert wird (Mitte). Der Algorithmus berechnet die Pixel dann sukzessive um die initiale Region auf Basis der Nachbarschaftssuche (rechts).
+	}
+	\label{pixelbased}
+\end{figure}
 
 Die zu synthetisierende Textur wird zuerst initialisiert, indem eine kleine beliebige Region des Beispielmusters in die Mitte der Textur kopiert wird.
 Der Algorithmus berechnet dann sukzessive die einzelnen Pixelfarben der Textur kreisförmig um die initiale Region von innen nach außen.
-Abbildung \todo{abb} illustriert dieses Verfahren.
-Die Farbe eines aktuell betrachteten Pixels $p$ in der Textur wird dann über eine Nachbarschaftssuche im Beispielmuster ermittelt.
-Dazu wird zuerst ein Rahmen mit der Größe der Nachbarschaft um den Pixel $p$ gelegt (\todo{größe der nachbarschaft im beispiel}) und alle bereits gesetzten Pixel in diesem Rahmen gefunden.
+Abbildung \ref{pixelbased} illustriert dieses Verfahren.
+Die Farbe eines aktuell betrachteten Pixels $p$ (rot) in der Textur wird dann über eine Nachbarschaftssuche im Beispielmuster ermittelt.
+Dazu wird zuerst ein Rahmen mit der Größe der Nachbarschaft um den Pixel $p$ gelegt (hier $3 \times 3$) und alle bereits gesetzten Pixel in diesem Rahmen gefunden (orange).
 Auf Basis dieser gesetzten Pixel wird im Beispielmuster die ähnlichste Nachbarschaft auf Grundlage von (\ref{nachbarschaftssuche}) gefunden.
-Der Pixel $p$ erhält dann die Farbe des Pixels in der Mitte der ermittelten ähnlichsten Nachbarschaft im Beispielmuster.
+Der Pixel $p$ erhält dann die Farbe des Pixels in der Mitte der ermittelten ähnlichsten Nachbarschaft im Beispielmuster (blau).
 Dieser Vorgang wird solange wiederholt, bis alle Pixel der Textur gesetzt sind.
 
 Der Algorithmus \cite{EL99} ist relativ einfach zu verstehen sowie zu implementieren \cite{StateOfTheArt}.
@@ -66,6 +125,51 @@ Ist sie auf der anderen Seite zu groß, können sichtbare Wiederholungen entsteh
 
 \subsubsection{Regionsbasierte Textursynthese}
 
-Ein weiterer Vertreter der lokal wachsenden Verfahren und eine Erweiterung der pixelbasierten Textursynthese ist die \emph{regionsbasierte Textursynthese}.
+Ein weiterer Vertreter der lokal wachsenden Verfahren und eine Erweiterung bzw. ein Nachfolger der pixelbasierten Textursynthese ist die \emph{regionsbasierte Textursynthese} (vgl. \cite{StateOfTheArt}).
+Die regionsbasierte Synthese ist sehr ähnlich zu der pixelbasierten Synthese, aber anstatt einzelne Pixel zu kopieren, werden stattdessen ganze Regionen in die Textur kopiert.
+Damit kann die Qualität der Textursynthese verbessert werden, denn es ist sichergestellt, dass Pixel innerhalb einer Region auch zueinander passen.
+Der wesentliche Unterschied der beiden Verfahren besteht letztendlich im Kopierungsprozess.
+In pixelbasierten Algorithmen ist die Kopie eines Pixels fest und kann nachträglich nicht mehr verändert werden.
+Bei den regionsbasierten Verfahren verhält es sich anders, da die Kopie einer Region üblicherweise dazu führt, dass bereits synthetisierte Bereiche der Textur durch die neue Region überdeckt werden.
+Der Algorithmus muss folglich eine Entscheidung treffen, wie er mit den im Konflikt stehenden Pixeln umgeht.
+Mehrere mögliche Szenarien sind die Folge.
+Neue Regionen können alte Regionen einfach überschreiben (vgl. Abbildung \ref{regionsbasiert}a).
+Das führt in der Regel aber zu sichtbaren Kanten der einzelnen Regionen \cite{StateOfTheArt}.
+Eine weitere Möglichkeit ist, neue Regionen mit den bereits überlappenden Bereichen der Textur zu überblenden (vgl. Abbildung \ref{regionsbasiert}b).
+In manchen Situationen kann dies jedoch zu verwaschenen Artefakten führen \cite{StateOfTheArt}.
+Die wohl populärste Methode ist das \emph{GraphCut}-Verfahren (vgl. \cite{GraphCut, StateOfTheArt}).
+Der GraphCut-Algorithmus sucht einen optimalen Pfad zwischen zwei Regionen, der sie trennt (vgl. Abbildung \ref{regionsbasiert}c).
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{images/ueberlagern}
+		\caption{Überlagern}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{images/ueberblenden}
+		\caption{Überblenden}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{images/graphcut}
+		\caption{GraphCut}
+	\end{subfigure}
+	
+	\caption{
+		Verschiedene Methoden, wie mit den im Konflikt stehenden Pixeln bei der Kopie einer neuen Region (grün) und den bereits synthetisierten Regionen (rot) umgegangen wird.
+	}
+	\label{regionsbasiert}
+\end{figure}
+
+Regionsbasierte Verfahren sind in der Regel erfolgreicher als pixelbasierte Verfahren, da sie die globale Struktur des Beispielmusters besser einfangen können.
+Pixelbasierte Verfahren erlauben dagegen mehr Kontrolle über einzelne Pixel \cite{TexturOptimization}.
+Ihnen beiden ist aber eine gemeinsame Schwäche zuteil.
+Auf Grund ihres lokalen Wachstums um eine initiale Region können sich kleine Fehler in den Anfängen der Synthese schnell anhäufen und zu Inkonsistenzen führen \cite{TexturOptimization}.
+Global wachsende Verfahren setzen dort an und versuchen, diesen Fehler so gering wie möglich zu halten.
 
 \subsubsection{Texturoptimierung}

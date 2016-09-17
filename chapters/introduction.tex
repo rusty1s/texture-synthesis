@@ -1,23 +1,22 @@
 \section{Einleitung}
 
 Texturen sind ein fundamentales Mittel zur Erstellung von Modellen für die Darstellung in Bildern, Videos oder Spielen.
-Sie werden benötigt, um die Oberflächendetails eines Modells darzustellen ohne diese explizit über Geometrie oder Materialeigenschaften modellieren zu müssen \cite{StateOfTheArt}.
+Sie werden benötigt um die Oberflächendetails eines Modells darzustellen ohne diese explizit über Geometrie oder Materialeigenschaften modellieren zu müssen \cite{StateOfTheArt}.
 Damit wird der Detailgrad eines Modells erhöht, ohne dabei den Detailgrad der zu Grunde liegenden Geometrie zu erhöhen.
 Das führt unmittelbar zu einer schnelleren Berechnung des darzustellenden Bildes und einer Einsparung von Speicherplatz.
 
-Texturen zeigen die visuelle Oberfläche eines Modells mit sich wiederholenden Mustern \cite{StateOfTheArt}.
-\todo{der Satz is scheiße}
+Texturen beschreiben die visuelle Oberfläche eines Modells in einem (meist) rechteckigem Bild.
+Mittels eines Mapping-Verfahrens wird dieses Bild anschließend auf das entsprechende Modell projiziert \cite{SelfTuning}.
+Oft werden Texturen strikter definiert, nämlich als eine Darstellung einer Oberfläche mit sich wiederholenden Mustern \cite{StateOfTheArt}.
 Der Grad der Zufälligkeit dieser Wiederholung kann dabei üblicherweise für unterschiedliche Texturen variieren.
 Naturgegebene Texturen besitzen in der Regel auf Grund der Unvollkommenheit der Natur eine komplett zufällige Wiederholung von sich ähnlichen Mustern, wo hingegen Menschengeschaffenes oft auch eine deterministische Komponente besitzt.
-Ein Fliesenmuster besitzt zum Beispiel eine zufällige Wiederholung in den Mikrodetails seiner Fliesen, die Platzierung der Fliesen bzw. deren anliegenden Kanten unterliegen dagegen aber einem deterministischem Muster \cite{StateOfTheArt}.
+Ein Fliesenmuster besitzt z.B. eine zufällige Wiederholung in den Mikrodetails seiner Fliesen, die Platzierung der Fliesen bzw. deren anliegende Kanten unterliegen dagegen aber einer deterministischem Komponente \cite{StateOfTheArt}.
 
-Die Erstellung von Texturen gilt allgemein anerkannt als sehr aufwändig \cite{StateOfTheArt}.
-Das zeichnet sich insbesondere dadurch wieder, dass es einen speziellen Berufszweig in der Film- und Spielebranche namens \emph{Texture Artist} gibt, der sich ausschließlich mit der Aufgabe befasst, qualitativ hochwertige Texturen zu kreieren.
+Es kann äußerst schwierig sein, eine Textur zu generieren, dessen Dimensionen und Auflösung an eine bestimmte Modellaufgabe angepasst sind \cite{SelfTuning}.
+Das zeichnet sich insbesondere dadurch wieder, dass es einen speziellen Berufszweig in der Film- und Spielebranche namens \emph{Texture Artist} gibt, der sich ausschließlich mit der Aufgabe befasst, qualitativ hochwertige Texturen zu kreieren \cite{StateOfTheArt}.
 Diese werden meistens über Handzeichnungen oder über handbearbeitete Fotografien erstellt.
 Handzeichnungen können zwar ästhetisch ansprechend sein, aber sie garantieren keinerlei Fotorealismus.
 Fotografien hingegen werden in einem beliebigem Grafikprogramm solange bearbeitet, bis sie den Anforderungen der Textur gerecht werden.
-Das führt in der Regel dazu, dass die Erstellung einer Textur sehr zeitaufwändig ist und sich dennoch auffällige Wiederholungen oder Unsauberkeiten in die Textur einschmuggeln können.
+Das führt in der Regel dazu, dass die Erstellung einer Textur sehr zeitaufwändig ist und sich dennoch auffällige Wiederholungen oder Unsauberkeiten in der Textur nicht vermeiden lassen.
 Ferner ist nicht jeder Mensch ein Künstler und es ist äußerst schwierig wenn nicht gar unmöglich ohne Vorkenntnisse oder künstlerische Fähigkeiten qualitativ hochwertige Texturen zu erzeugen \cite{StateOfTheArt}.
 Das Verfahren der Textursynthese widmet sich diesem Problem.
-
-\todo{andere einleitungen außer stateoftheart hinzufügen}
