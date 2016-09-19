@@ -232,7 +232,7 @@ Das unterteilt die Lösung des Minimierungsproblems in zwei Schritte.
 
 Der \emph{E-Schritt} minimiert die Zielfunktion, in dem ein neues $T$ bestimmt wird, sodass $d(\textbf{t}_p, \textbf{x}_p)$ minimal ist für alle $p \in T^{\dagger}$.
 Für Pixel in der Textur, die lediglich einer Nachbarschaft angehören, bedeutet das insbesondere, dass diese die Farbe des Pixels an der Position im entsprechenden Beispielmuster annehmen.
-Für Pixel, die sich in mehreren Nachbarschaften wiederfinden (vgl. roter Bereich in Abbildung \ref{textureopimization}), wird dessen neue Farbe über die Mittelung der verschiedenen Pixelfarben aus den zugehörigen Nachbarschaften des Beispielmusters bestimmt \cite{TextureOptimization}.
+Für Pixel, die sich in mehreren Nachbarschaften wiederfinden (vgl. roter Bereich in Abbildung \ref{texturoptimierung}), wird dessen neue Farbe über die Mittelung der verschiedenen Pixelfarben aus den zugehörigen Nachbarschaften des Beispielmusters bestimmt \cite{TextureOptimization}.
 Diese Mittelung führt zu einer gewissen Unschärfe und erlaubt dem Optimierungsprozess, neue ähnliche Nachbarschaften im Beispielmuster zu finden.
 
 Der \emph{M-Schritt} ändert schließlich die Parameter für das aktualisierte $T$, in dem für das festgehaltene $T$ dessen neue ähnlichste Nachbarschaften im Beispielmuster gesucht werden.
