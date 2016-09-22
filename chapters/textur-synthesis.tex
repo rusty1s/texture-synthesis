@@ -78,7 +78,6 @@ Die Nachbarschaftssuche basiert im Allgemeinen auf der kleinsten quadrierten far
 	\label{nachbarschaftssuche}
 	\min d(\textbf{t}_i, \textbf{x}_j) = \lVert \textbf{t}_i - \textbf{x}_j \rVert^2\text{.}
 \end{equation}
-
 $\textbf{t}_i$ beziehungsweise $\textbf{x}_j$ beschreiben dabei die Farben einer Nachbarschaft der Größe $N \times N$ als Vektor um den Pixel $i$ in der Textur $T$ respektive um den Pixel $j$ in dem Beispielmuster $X$.
 Für jede Nachbarschaft $\textbf{t}_i$ ist dann ihre ähnlichste Nachbarschaft $\textbf{x}_j$ im Beispielmuster gefunden, wenn $d(\textbf{t}_i, \textbf{x}_j)$ minimal ist \cite{TextureOptimization}.
 
@@ -197,7 +196,6 @@ Dann beschreibt
 	E(T, \lbrace \textbf{x}_p : p \in T^{\dagger} \rbrace) = \sum_{p \in T^{\dagger}} d(\textbf{t}_p, \textbf{x}_p)
 	\label{zielfunktion}
 \end{equation}
-
 die zu minimierende Zielfunktion \cite{TextureOptimization}.
 $E$ beschreibt das Ungleichgewicht der Textur $T$ zu einem Beispielmuster $X$ in Abhängigkeit einer Eingabemenge $\lbrace \textbf{x}_p \rbrace$.
 Diese Menge beschreibt die ähnlichsten Nachbarschaften im Beispielmuster für jeden betrachteten Pixel $p$ in der Textur (vgl. Abbildung \ref{texturoptimierung}).

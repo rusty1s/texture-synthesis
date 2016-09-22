@@ -8,7 +8,7 @@ Folglich werden Texturen aus hochauflösenden Beispielmustern synthetisiert, die
 
 In diesem Kapitel wird eine Textursynthese beschrieben, die sich der Texturoptimierung annimmt und sie mit mehreren Verbesserungen ausstattet, um die bisherigen Probleme der Textursynthese zu überwinden.
 Dazu zählen insbesondere das Erhalten von großflächigen Strukturen aus dem Beispielmuster, das Vermeiden von auffälligen Wiederholungen in der synthetisierten Textur und das Erkennen und Bewahren von Regelmäßigkeiten.
-Das Verfahren greift dabei Schlüsselideen vorangegangener Verbesserungsmöglichkeiten auf und modifiziert sie in so fern, sodass die Texturoptimierung weiterhin völlig autonom arbeiten kann und keine individuellen, benutzerdefinierten Anpassungen für unterschiedliche Beispielmuster von Nöten sind.
+Das Verfahren greift dabei Schlüsselideen vorangegangener Verbesserungsmöglichkeiten auf und modifiziert sie in so fern, so dass die Texturoptimierung weiterhin völlig autonom arbeiten kann und keine individuellen, benutzerdefinierten Anpassungen für unterschiedliche Beispielmuster von Nöten sind.
 
 \subsection{Großflächige Strukturen}
 
@@ -20,6 +20,8 @@ Ein möglicher Ansatz dieses Problem zu lösen ist der Einsatz eines \emph{\glqq
 Dieser \glqq Guidance-Channel\grqq \ erweitert das Beispielmuster um einen zusätzlichen Kanal, in welchem nicht-lokale Informationen über großflächige Strukturen des Beispielmusters gespeichert werden.
 \cite{Guidance} zeigt, dass diese Methode besonders gut funktioniert, wenn in ihm die Distanz jedes Pixels zu dem an ihm nächstgelegenen Merkmal (z.B. eine Kontur)  gespeichert wird.
 Dieser \glqq Guidance-Channel\grqq \ soll im Gegensatz zu bisherigen Verfahren völlig automatisiert berechnet werden und nicht explizit durch den Benutzer übergeben werden müssen \cite{SelfTuning}.
+
+Die Erstellung eines \glqq Guidance-Channels\grqq \ umfasst mehrere Schritte, die in Abbildung \ref{guidance-channel} illustriert sind.
 
 \begin{figure}
 	\centering
@@ -41,12 +43,104 @@ Dieser \glqq Guidance-Channel\grqq \ soll im Gegensatz zu bisherigen Verfahren v
 		\caption{\glqq Guidance-Channel\grqq}
 	\end{subfigure}
 	
-	\caption{Erstellung eines \glqq Guidance-Channels\grqq}
+	\caption{Erstellung eines \glqq Guidance-Channels\grqq \ \cite{SelfTuning}.}
 	\label{guidance-channel}
 \end{figure}
 
-Die Erstellung eines \glqq Guidance-Channels\grqq \ umfasst mehrere Schritte, die in Abbildung \ref{guidance-channel} illustriert sind.
+Zunächst werden aus dem Beispielbild Merkmale mit Hilfe eines Kantendetektors extrahiert.
+Dies generiert ein graustufiges Kantenbild des Beispielmusters mit kontinuierlichen Werten.
+Für die weitere Verarbeitung des Kantenbildes ist dessen Binarisierung nötig.
+Mittels Otsus Schwellenwertverfahren (vgl. \cite{Otsu}) wird dazu automatisiert ein optimaler globaler Schwellenwert ermittelt, mit dessen Hilfe das Kantenbild binarisiert werden kann.
+Anschließend kann aus dem binarisierten Kantenbild ein Distanzbild bestimmt werden.
+Dazu wird mittels MATLABs \texttt{bwdist}-Methode die euklidische Distanz jedes Pixels zu seiner nächstgelegenen Kante berechnet.
+Das bedeutet, dass in der Kantenbildmatrix die Distanz von jedem Eintrag mit einer $0$ (keine Kante) zu dem räumlich nächstgelegenen Eintrag mit einer $1$ (Kante) bestimmt wird und in einer neuen Matrix bzw. einem neuen Bild gespeichert wird (dem Distanzbild).
+Anschließend wird das Distanzbild entsprechend zum benutzten Farbraum normiert, so dass dessen Werte zu den restlichen Werten des Beispielmusters passen.
+Das normierte Distanzbild wird schließlich als \glqq Guidance-Channel\grqq \ bzw. als vierter Kanal im Beispielmuster gespeichert (vgl. \cite{SelfTuning}).
+
+Der \glqq Guidance-Channel\grqq \ kann schließlich ohne spezielle Anpassung der Texturoptimierung  für die Synthese berücksichtigt werden.
+Dazu müssen lediglich die Vektoren $\textbf{t}_p$ und $\textbf{x}_p$ den vierten Kanal für ihre Nachbarschaften mit aufnehmen.
+Dann liefert $d(\textbf{t}_p, \textbf{x}_p)$ (vgl. (\ref{nachbarschaftssuche})) ein Ähnlichkeitsmaß zwischen Beispielmuster und Textur unter zusätzlicher Be\-rück\-sich\-ti\-gung des \glqq Guidance-Channels\grqq \ \cite{SelfTuning}.
+
+Es zeigt sich jedoch in der Praxis, dass die feste Gewichtung des \glqq Guidance-Channels\grqq \ zu Problemen führen kann.
+Durch das Hinzufügen eines vierten Kanals verringert sich die Fähigkeit der Synthese, unterschiedliche Materialen bzw. unterschiedliche Farben zwischen einer Kante zu unterscheiden.
+Abbildung \ref{guidance-channel-weight} erklärt dieses Problem anhand eines Beispiels.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\textwidth]{images/guidance-channel-weight}
+	\caption{
+		Synthese einer Textur bei fester Gewichtung des \glqq Guidance-Channels\grqq \ führt zu schwachen Resultaten bei unterschiedlichen Farbverteilungen an den Kanten.
+		Einzelne Kacheln vermischen sich in ihren Farben, da ihr Beitrag zum Gesamtresultat im Vergleich zum \glqq Guidance-Channel\grqq \ zu gering ist \cite{SelfTuning}.
+	}
+	\label{guidance-channel-weight}
+\end{figure}
+
+Um diesem Problem entgegenzuwirken kann eine \emph{adaptive Gewichtung} des \glqq Gui\-dance-Channels\grqq \ genutzt werden.
+Die adaptive Gewichtung ordnet dem \glqq Guidance-Channel\grqq \ ein geringeres Gewicht zu, wenn sich die Farben in der räumlichen Nachbarschaft des betrachteten Pixels im Beispielmuster stark unterscheiden.
+Damit kann der Vorteil der Berücksichtigung von nicht-lokalen Informationen weiterhin genutzt werden.
+Die Gewichtung wird jedoch verringert, falls sie für die Aufrechterhaltung der Qualität der synthetisierten Textur von Nöten ist.
+
+Dazu werden zuerst die Pixelfarben in der direkten Nachbarschaft eines Pixels im Beispielmuster in einer Dichte-Karte gesammelt \cite{SelfTuning}.
+Mittels dieser Karte kann schließlich entschieden werden, ob sich die Farben in der betrachteten Nachbarschaft stark unterscheiden.
+Dies ist zum Beispiel der Fall, wenn sich mehrere Hügel in der Dichte-Karte wiederfinden.
+Unterscheiden sich die Farben nicht, so kann ein hohes Gewicht für den \glqq Guidance-Channel\grqq \ gewählt werden.
+Andernfalls wird ein etwas zurückhaltenderes Gewicht gewählt \cite{SelfTuning}.
 
 \subsection{Auffällige Wiederholungen}
+
+Bisherige Verfahren garantieren auf Grund der \glqq Markov-Random-Field\grqq -Eigenschaft nur eine lokale Ähnlichkeit zum Beispielmuster.
+Ein kleiner Ausschnitt aus der Textur ist ähnlich zu einem kleinen Ausschnitt des Beispielmusters.
+Das führt unmittelbar zu dem Problem, dass sich bestimmte Ausschnitte in der synthetisierten Textur häufig wiederholen, wogegen sich andere Ausschnitte des Beispielmusters nur sehr selten in der Textur wiederfinden.
+Zum einen wird dadurch nicht die komplette Vielfalt des Beispielmusters ausgeschöpft und es wird demnach keine globale Ähnlichkeit zum Beispielmuster erreicht werden.
+Zum anderen sind für den Betrachter auffällige Wiederholungen in der synthetisierten Textur zu sehen.
+Das führt unmittelbar dazu, dass die Ergebnisse der Textursynthese den Anforderungen an eine qualitativ hochwertige Textur nicht gerecht werden.
+
+Zur Lösung dieses Problems können dem Auswahlprozess $\min d(\textbf{t}_p, \textbf{x}_p)$ (vgl. (\ref{nachbarschaftssuche}), (\ref{zielfunktion})) der ähnlichsten Nachbarschaften im Beispielmuster zu den Nachbarschaften in der zu optimierenden Textur bestimmten Einschränkungen (\emph{Constraints}) unterliegen.
+\cite{SelfTuning} stellt in diesem Zuge das \emph{\glqq Spatial-Uniformity\grqq} -Constraint vor, mit dem Ziel, eine globale Ähnlichkeit zum Beispielmuster zu garantieren.
+
+Das \glqq Spatial Uniformity\grqq -Constraint soll den Auswahlprozess dazu ermutigen, alle Regionen des Beispielmuster in gleichmäßigem Verhältnis zueinander in der synthetisierten Textur zu berücksichtigen, in dem Regionen bei der Auswahl bestraft werden, die bereits zu oft verwendet wurden.
+Damit unterscheidet es sich insbesondere von dem \emph{\glqq Bidirectional Similarity\grqq} -Constraint, welches lediglich garantiert, dass jede Region des Beispielmusters mindestens einmal für die Synthese der Textur benutzt wird (vgl. \cite{BidirectionalSimilarity}) \cite{SelfTuning}.
+Für diese Aufgabe wird für jede Iteration der Texturoptimierung eine Vorkommen-Karte $\Omega$ mit
+
+\begin{equation*}
+	\Omega(x,y) = \big| \lbrace \textbf{x}_p \ \mid \ (x,y) \in \mathcal{N}(\textbf{x}_p) \rbrace \big|
+\end{equation*}
+für die Pixel des Beispielmusters aufgebaut, die speichert, wie oft ein Pixel in den Regionen vorkommt, die die Textur bilden.
+$\mathcal{N}(\textbf{x}_p)$ kennzeichnet dabei die Menge an Pixeln in der Nachbarschaft um $\textbf{x}_p$.
+Abbildung \ref{occurence-map} zeigt die Ausgabe der Vorkommen-Karte $\Omega$ für eine gewöhnliche Textursynthese ohne Constraints.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\textwidth]{images/occurence-map}
+	\caption{
+		Synthese einer Textur ohne Constraints \cite{SelfTuning}.
+		Es finden sich auffällige Wiederholungen in der synthetisierten Textur (rechts) wieder.
+		Die Vorkommen-Karte $\Omega$ (unten links) des Beispielmusters (oben links) unterstreicht dies, denn es gibt einen deutlich erkennbaren (weißen) Bereich an Pixeln des Beispielmusters, der besonders oft für die Synthese der Textur verwendet wurde.
+	}
+	\label{occurence-map}
+\end{figure}
+
+In einer perfekt balancierten Textur wird jeder Pixel des Beispielmusters gleich oft benutzt.
+Die optimale Anzahl dafür wird über
+
+\begin{equation*}
+	\omega_{\textit{best}} = \frac{|T|}{|X|}N^2
+\end{equation*}
+definiert, wobei $|T|$ bzw. $|X|$ die Anzahl der Regionen in $T$ respektive $X$ und $N^2$ die Anzahl der Pixel in jeder Region angeben.
+
+Um den Auswahlprozess zu manipulieren wird der Distanzterm zur Nachbarschaftssuche aus (\ref{nachbarschaftssuche}) modifiziert zu
+
+\begin{equation}
+	d(\textbf{t}_p, \textbf{x}_p) = \lVert \textbf{t}_p - \textbf{x}_p \rVert^2 + \lambda \frac{\Omega(\textbf{x}_p)}{\omega_{\textit{best}}}\text{,}
+	\label{spatial-similarity}
+\end{equation}
+wobei $\Omega(\textbf{x}_p)$ den Durchschnitt der globalen Häufigkeit aller Pixel in $\textbf{x}_p$ über
+
+\begin{equation*}
+	\Omega(\textbf{x}_p) = \frac{\Sigma_{(x,y) \in \textbf{x}_p}\Omega(x,y)}{N^2}
+\end{equation*}
+beschreibt.
+Formel \ref{spatial-similarity} bestraft damit Regionen $\textbf{x}_p$ umso mehr, je häufiger die Pixel in ihr im Verhältnis zur optimalen Häufigkeit eines Pixels bereits in der synthetisierten Textur vorkommen.
+$\lambda = 10$ kontrolliert dabei die Gewichtung des Bestrafungsterm (vgl. \cite{SelfTuning}).
 
 \subsection{Regelmäßigkeiten}
