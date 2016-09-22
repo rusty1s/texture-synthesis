@@ -106,7 +106,7 @@ Für diese Aufgabe wird für jede Iteration der Texturoptimierung eine Vorkommen
 	\Omega(x,y) = \big| \lbrace \textbf{x}_p \ \mid \ (x,y) \in \mathcal{N}(\textbf{x}_p) \rbrace \big|
 \end{equation*}
 für die Pixel des Beispielmusters aufgebaut, die speichert, wie oft ein Pixel in den Regionen vorkommt, die die Textur bilden.
-$\mathcal{N}(\textbf{x}_p)$ kennzeichnet dabei die Menge an Pixeln in der Nachbarschaft um $\textbf{x}_p$.
+$\mathcal{N}(\textbf{x}_p)$ kennzeichnet dabei die Menge an Pixeln in der Nachbarschaft um $\textbf{x}_p$ \cite{SelfTuning}.
 Abbildung \ref{occurence-map} zeigt die Ausgabe der Vorkommen-Karte $\Omega$ für eine gewöhnliche Textursynthese ohne Constraints.
 
 \begin{figure}
@@ -141,6 +141,81 @@ wobei $\Omega(\textbf{x}_p)$ den Durchschnitt der globalen Häufigkeit aller Pix
 \end{equation*}
 beschreibt.
 Formel \ref{spatial-similarity} bestraft damit Regionen $\textbf{x}_p$ umso mehr, je häufiger die Pixel in ihr im Verhältnis zur optimalen Häufigkeit eines Pixels bereits in der synthetisierten Textur vorkommen.
-$\lambda = 10$ kontrolliert dabei die Gewichtung des Bestrafungsterm (vgl. \cite{SelfTuning}).
+$\lambda = 10$ kontrolliert dabei die Gewichtung des Bestrafungsterms (vgl. \cite{SelfTuning}).
 
 \subsection{Regelmäßigkeiten}
+
+Bisherige Verfahren scheitern daran reguläre oder fast reguläre Strukturen aus dem Beispielmuster korrekt zu reproduzieren.
+So ist mit den bisherigen Ansätzen und Verbesserungsmöglichkeiten keinesfall garantiert, dass Regelmäßigkeiten aus einem Beispielmuster wie etwa Steinkacheln erhalten bleiben.
+Das liegt insbesondere an der in Kapitel \ref{chapter-texturoptimierung} erwähnten zufällig generierten Initialisierungstextur \cite{SelfTuning}.
+Diese gewährt zwar, dass der Prozess der Synthese mit der korrekten Farbverteilung des Beispielmusters startet, jedoch geht dabei jede globale Struktur, die das Beispielmuster (möglicherweise) aufweist, verloren \cite{SelfTuning}.
+Letztendlich kann keine Regelmäßigkeit reproduziert werden, wenn sie im Prozess der Synthese nicht zuvor erkannt wurde.
+In der Vergangenheit wurden dazu zahlreiche Ansätze vorgestellt.
+\cite{SelfTuning} baut auf diesen Ideen auf und generiert völlig automatisiert eine  Initialisierungstextur, die Regelmäßigkeiten des Beispielmusters wahrt, falls diese vorhanden sind.
+Die Texturoptimierung garantiert dann auf Grund der ähnlichsten Nachbarschaftssuche zwischen Beispielmuster und Textur, dass die Regelmäßigkeiten der Initialisierungstextur im weiteren Verlauf der Optimierung erhalten bleiben \cite{SelfTuning}.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.45\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{images/regular-1}
+		\caption*{($a$)}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.45\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{images/regular-2}
+		\caption*{($b$)}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.45\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{images/regular-3}
+		\caption*{($c$)}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.45\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{images/regular-4}
+		\caption*{($d$)}
+	\end{subfigure}
+	
+	\caption{
+		Berechnung zweier Gitter erzeugender Vektoren \cite{SelfTuning}.
+		Zuerst werden die interessantesten Merkmale aus dem Beispielmuster extrahiert ($a$) und eine Menge der ähnlichsten Paare dieser Merkmale bestimmt ($b$).
+		Aus den Translationen dieser Paare wird eine Dichte-Karte berechnet ($c$), aus dieser zwei optimale Gitter erzeugende Vektoren ermittelt werden ($d$).
+	}
+	\label{regular}
+\end{figure}
+
+Die Strategie zur Erzeugung der Initialisierungstextur unterteilt sich in zwei Schritte.
+Zuerst muss die Regelmäßigkeit des Beispielsmuster gefunden werden.
+Dazu sucht man im Beispielmuster nach zwei linear unabhängigen \emph{Gitter erzeugenden Vektoren}, die durch Konkatenation ihrer selbst ein Gitter aufspannen (vgl. Abbildung \ref{regular}$d$).
+Anschließend muss auf Basis dieser gefundenen Vektoren die Textur entsprechend initialisiert werden \cite{SelfTuning}.
+
+Abbildung \ref{regular} illustriert den Prozess zur Bestimmung der beiden Gitter erzeugenden Vektoren.
+Dazu werden zunächst die interessantesten Merkmalspunkte aus dem Beispielmuster über den \emph{\glqq Difference of Gaussians\grqq} -Algorithmus ermittelt und die SIFT-Deskriptoren für jeden dieser Merkmalspunkte berechnet \cite{SelfTuning}.
+Anschließend wird für jedes Merkmal dessen ähnlichstes Merkmal ermittelt.
+Dabei werden nur diejenigen Paare für die weitere Berechnung behalten, die sich im Vergleich mit allen Paaren am ähnlichsten ind (vgl. \cite{SelfTuning}).
+Für die übrig gebliebenen Paare wird dessen Translation zueinander im Beispielmuster berechnet und in einem zweidimensionalen Koordinatensystem gespeichert.
+Aus den Endpunkten dieser Translationen im Koordinatensystem kann dann schließlich eine Dichte-Karte gewonnen werden, die die Häufigkeiten der einzelnen Endpunkte aller Translationen beschreiben.
+Hügel in der Dichte-Karte visualisieren dabei auffällige Regelmäßigkeiten von ähnlichen Punkten, die versetzt zueinander sind und die daher als visuelle Regelmäßigkeit im Beispielmuster interpretiert werden können.
+Die beiden gesuchten Gitter erzeugenden Vektoren können nun über ein Optimierungsproblem gefunden werden.
+Dabei soll das Gitter der beiden Vektoren die Hügel in der Karte optimal beschreiben.
+\cite{SelfTuning} bedient sich dafür bei der statistischen Analyse und bestimmt die beiden Vektoren über Maximierung des \emph{\glqq $F_1$-Scores\grqq} (vgl. \cite{F1Score, SelfTuning}) mit
+
+\begin{equation*}
+	F_1 = \beta \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}\text{.}
+\end{equation*}
+Dabei beschreibt die \emph{Precision}-Term, in wie weit die beiden Vektoren mit den Hügeln in der Dichte-Karte zusammen passen.
+Der \emph{Recall}-Term ermittelt, in wie weit alle Hügel in der Dichte-Karte abgedeckt werden.
+
+Nachdem die Regelmäßigkeit über die Berechnung der beiden Gitter erzeugenden Vektoren ermittelt wurde, kann letztendlich eine Textur initialisiert werden.
+Dafür wird das Beispielmuster in disjunkte Bereiche unterteilt, dessen Größe dem umschließenden Reckteck einer Gitterzelle entspricht.
+Diese Bereiche werden dann schließlich sukzessive von links nach rechts und von oben nach unten zufällig in die Textur kopiert \cite{SelfTuning}.
+
+Es zeigt sich, dass die aus dieser Initialisierungsstrategie gewonnenen Texturen Regelmäßigkeiten des Beispielmusters erfolgreich bewahren können.
+Insbesondere ist anzumerken, dass diese Initialisierungsstrategie keinen negativen Effekt besitzt, wenn das Beispielmuster keinerlei Regelmäßigkeit aufweist.
+Die gefundenen Gitter erzeugenden Vektoren sind in der Regel dann so kurz und die daraus resultierenden disjunkten Bereiche so klein, dass die Strategie in diesen Fällen einer zufälligen Füllung der Textur gleicht (vgl. \cite{SelfTuning}).
+
+
