@@ -47,7 +47,7 @@ Die Erstellung eines \glqq Guidance-Channels\grqq \ umfasst mehrere Schritte, di
 	\label{guidance-channel}
 \end{figure}
 
-Zunächst werden aus dem Beispielbild Merkmale mit Hilfe eines Kantendetektors extrahiert.
+Zunächst werden aus dem Beispielmuster Merkmale mit Hilfe eines Kantendetektors extrahiert.
 Dies generiert ein graustufiges Kantenbild des Beispielmusters mit kontinuierlichen Werten.
 Für die weitere Verarbeitung des Kantenbildes ist dessen Binarisierung nötig.
 Mittels Otsus Schwellenwertverfahren (vgl. \cite{Otsu}) wird dazu automatisiert ein optimaler globaler Schwellenwert ermittelt, mit dessen Hilfe das Kantenbild binarisiert werden kann.
@@ -75,7 +75,7 @@ Abbildung \ref{guidance-channel-weight} erklärt dieses Problem anhand eines Bei
 	\label{guidance-channel-weight}
 \end{figure}
 
-Um diesem Problem entgegenzuwirken kann eine \emph{adaptive Gewichtung} des \glqq Gui\-dance-Channels\grqq \ genutzt werden.
+Um diesem Problem entgegenzuwirken wird eine \emph{adaptive Gewichtung} des \glqq Gui\-dance-Channels\grqq \ genutzt.
 Die adaptive Gewichtung ordnet dem \glqq Guidance-Channel\grqq \ ein geringeres Gewicht zu, wenn sich die Farben in der räumlichen Nachbarschaft des betrachteten Pixels im Beispielmuster stark unterscheiden.
 Damit kann der Vorteil der Berücksichtigung von nicht-lokalen Informationen weiterhin genutzt werden.
 Die Gewichtung wird jedoch verringert, falls sie für die Aufrechterhaltung der Qualität der synthetisierten Textur von Nöten ist.
@@ -145,8 +145,8 @@ $\lambda = 10$ kontrolliert dabei die Gewichtung des Bestrafungsterms (vgl. \cit
 
 \subsection{Regelmäßigkeiten}
 
-Bisherige Verfahren scheitern daran reguläre oder fast reguläre Strukturen aus dem Beispielmuster korrekt zu reproduzieren.
-So ist mit den bisherigen Ansätzen und Verbesserungsmöglichkeiten keinesfall garantiert, dass Regelmäßigkeiten aus einem Beispielmuster wie etwa Steinkacheln erhalten bleiben.
+Bisherige Verfahren scheitern daran regelmäßigen oder fast regelmäßigen Strukturen aus dem Beispielmuster korrekt zu reproduzieren.
+So ist mit den bisherigen Ansätzen und Verbesserungsmöglichkeiten keinesfalls garantiert, dass Regelmäßigkeiten aus einem Beispielmuster wie etwa Steinkacheln erhalten bleiben.
 Das liegt insbesondere an der in Kapitel \ref{chapter-texturoptimierung} erwähnten zufällig generierten Initialisierungstextur \cite{SelfTuning}.
 Diese gewährt zwar, dass der Prozess der Synthese mit der korrekten Farbverteilung des Beispielmusters startet, jedoch geht dabei jede globale Struktur, die das Beispielmuster (möglicherweise) aufweist, verloren \cite{SelfTuning}.
 Letztendlich kann keine Regelmäßigkeit reproduziert werden, wenn sie im Prozess der Synthese nicht zuvor erkannt wurde.
@@ -196,7 +196,7 @@ Anschließend muss auf Basis dieser gefundenen Vektoren die Textur entsprechend 
 Abbildung \ref{regular} illustriert den Prozess zur Bestimmung der beiden Gitter erzeugenden Vektoren.
 Dazu werden zunächst die interessantesten Merkmalspunkte aus dem Beispielmuster über den \emph{\glqq Difference of Gaussians\grqq} -Algorithmus ermittelt und die SIFT-Deskriptoren für jeden dieser Merkmalspunkte berechnet \cite{SelfTuning}.
 Anschließend wird für jedes Merkmal dessen ähnlichstes Merkmal ermittelt.
-Dabei werden nur diejenigen Paare für die weitere Berechnung behalten, die sich im Vergleich mit allen Paaren am ähnlichsten ind (vgl. \cite{SelfTuning}).
+Dabei werden nur diejenigen Paare für die weitere Berechnung behalten, die sich im Vergleich mit allen Paaren am ähnlichsten sind (vgl. \cite{SelfTuning}).
 Für die übrig gebliebenen Paare wird dessen Translation zueinander im Beispielmuster berechnet und in einem zweidimensionalen Koordinatensystem gespeichert.
 Aus den Endpunkten dieser Translationen im Koordinatensystem kann dann schließlich eine Dichte-Karte gewonnen werden, die die Häufigkeiten der einzelnen Endpunkte aller Translationen beschreiben.
 Hügel in der Dichte-Karte visualisieren dabei auffällige Regelmäßigkeiten von ähnlichen Punkten, die versetzt zueinander sind und die daher als visuelle Regelmäßigkeit im Beispielmuster interpretiert werden können.
@@ -211,7 +211,7 @@ Dabei beschreibt die \emph{Precision}-Term, in wie weit die beiden Vektoren mit 
 Der \emph{Recall}-Term ermittelt, in wie weit alle Hügel in der Dichte-Karte abgedeckt werden.
 
 Nachdem die Regelmäßigkeit über die Berechnung der beiden Gitter erzeugenden Vektoren ermittelt wurde, kann letztendlich eine Textur initialisiert werden.
-Dafür wird das Beispielmuster in disjunkte Bereiche unterteilt, dessen Größe dem umschließenden Reckteck einer Gitterzelle entspricht.
+Dafür wird das Beispielmuster in disjunkte Bereiche unterteilt, dessen Größe dem umschließenden Rechteck einer Gitterzelle entsprechen.
 Diese Bereiche werden dann schließlich sukzessive von links nach rechts und von oben nach unten zufällig in die Textur kopiert \cite{SelfTuning}.
 
 Es zeigt sich, dass die aus dieser Initialisierungsstrategie gewonnenen Texturen Regelmäßigkeiten des Beispielmusters erfolgreich bewahren können.
