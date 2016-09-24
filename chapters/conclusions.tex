@@ -1,1 +1,12 @@
 \section{Zusammenfassung}
+
+Die Textursynthese ist eine ernstzunehmende Alternative für die Erstellung von Texturen im Vergleich zu anderen Verfahren, die sich hauptsächlich auf die Arbeit eines Experten berufen.
+Mittels eines Beispielmusters können dabei völlig automatisiert Texturen synthetisiert werden, die größer sind als das Beispielmuster, aber sichtbar ähnlich zu ihm sind.
+Dabei lassen sich die Ansätze grob in zwei Kategorien unterteilen - in die lokal wachsenden und die global optimierenden Verfahren.
+Jedem dieser Ansätze liegt dabei die \glqq Markov-Random-Field\grqq -Eigenschaft zu Grunde.
+Obwohl diese Eigenschaft eine der populärsten und vielversprechensten Ansätze auf diesem Gebiet ist, so hat sie dennoch auf Grund ihrer lokalen Natur einen negativen Beigeschmack, der weiterer Optimierung bedarf.
+Im Laufe dieser Arbeit wurden daher drei Verbesserungsmöglichkeiten der Textursynthese präsentiert.
+Großflächige Strukturen können mit Hilfe eines zusätzlichen \glqq Guidance-Channels\grqq \ berücksichtigt werden.
+Eine globale Ähnlichkeit zum Beispielmuster und die daraus resultierende Vermeidung von sichtbar auffälligen Wiederholungen können mit Hilfe von Constraints, insbesondere dem \glqq Spatial-Uniformity\grqq -Constraint, bei der Nachbarschaftssuche erreicht werden.
+Schlussendlich können Regelmäßigkeiten über die Verwendung einer schlauen Initialisierungsstrategie erkannt und in der synthetisierten Textur erhalten bleiben.
+Zur Bewertung bzw. Evaluation einer Textursynthese wurde eine die Basis einer neuen Metrik namens Textursequenzen vorgestellt, die in Zukunft auf Grund des Mangels an geeigneten Metriken in diesem Gebiet an Bedeutung gewinnen könnte \cite{SelfTuning}.
