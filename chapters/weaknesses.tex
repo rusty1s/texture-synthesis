@@ -2,13 +2,13 @@
 
 Bisherige Ansätze demonstrieren ihre Algorithmen nur für Beispielmustern mit geringen Auflösungen bis zu $128^2$ Pixeln \cite{SelfTuning}.
 Für diese Auflösungen funktionieren die vorgestellten Ansätze gut, denn die entsprechenden Beispielmuster enthalten auf Grund ihrer geringen Größe oftmals nur kleine Details, die sich leicht vervielfachen lassen, ohne dabei unnatürlich auszusehen.
-Höher aufgelöste Beispielmuster leiden dagegen an der \glqq Markov-Random-Field\grqq -Eigenschaft.
+Höher aufgelöste Beispielmuster leiden dagegen an der \glqq Markov Random Field\grqq -Eigenschaft.
 Es werden stets nur kleine lokale Ausschnitte eines Beispielmusters betrachtet, wodurch die globale Ähnlichkeit zu dem benutzten Muster völlig außer Acht gelassen wird.
 Folglich werden Texturen aus hochauflösenden Beispielmustern synthetisiert, die den Erwartungen qualitativ hochwertigen Texturen nur selten gerecht werden.
 
 In diesem Kapitel wird eine Textursynthese beschrieben, die sich der Texturoptimierung annimmt und sie mit mehreren Verbesserungen ausstattet, um die bisherigen Probleme der Textursynthese zu überwinden.
 Dazu zählen insbesondere das Erhalten von großflächigen Strukturen aus dem Beispielmuster, das Vermeiden von auffälligen Wiederholungen in der synthetisierten Textur und das Erkennen und Bewahren von Regelmäßigkeiten.
-Das Verfahren greift dabei Schlüsselideen vorangegangener Verbesserungsmöglichkeiten auf und modifiziert sie in so fern, so dass die Texturoptimierung weiterhin völlig autonom arbeiten kann und keine individuellen, benutzerdefinierten Anpassungen für unterschiedliche Beispielmuster von Nöten sind.
+Das Verfahren greift dabei Schlüsselideen vorangegangener Verbesserungsmöglichkeiten auf und modifiziert sie in so fern, sodass die Texturoptimierung weiterhin völlig autonom arbeiten kann und keine individuellen, benutzerdefinierten Anpassungen für unterschiedliche Beispielmuster von Nöten sind.
 
 \subsection{Großflächige Strukturen}
 
@@ -16,12 +16,12 @@ Texturen bzw. Beispielmuster enthalten oft Details verschiedener Größen.
 So enthält eine Steintextur winzige Details in ihrer Oberfläche, aber wohlmöglich auch größere Strukturen wie etwa Risse oder Kanten.
 Diese Strukturen mit großer Ausdehnung werden in der bisherigen Synthese garnicht erst berücksichtigt.
 
-Ein möglicher Ansatz dieses Problem zu lösen ist der Einsatz eines \emph{\glqq Guidance-Channels\grqq} \ \cite{SelfTuning}.
-Dieser \glqq Guidance-Channel\grqq \ erweitert das Beispielmuster um einen zusätzlichen Kanal, in welchem nicht-lokale Informationen über großflächige Strukturen des Beispielmusters gespeichert werden.
+Ein möglicher Ansatz dieses Problem zu lösen ist der Einsatz eines \emph{\glqq Guidance Channels\grqq} \ \cite{SelfTuning}.
+Dieser \glqq Guidance Channel\grqq \ erweitert das Beispielmuster um einen zusätzlichen Kanal, in welchem nicht-lokale Informationen über großflächige Strukturen des Beispielmusters gespeichert werden.
 \cite{Guidance} zeigt, dass diese Methode besonders gut funktioniert, wenn in ihm die Distanz jedes Pixels zu dem an ihm nächstgelegenen Merkmal (z.B. eine Kontur)  gespeichert wird.
-Dieser \glqq Guidance-Channel\grqq \ soll im Gegensatz zu bisherigen Verfahren völlig automatisiert berechnet werden und nicht explizit durch den Benutzer übergeben werden müssen \cite{SelfTuning}.
+Dieser \glqq Guidance Channel\grqq \ soll im Gegensatz zu bisherigen Verfahren völlig automatisiert berechnet werden und nicht explizit durch den Benutzer übergeben werden müssen \cite{SelfTuning}.
 
-Die Erstellung eines \glqq Guidance-Channels\grqq \ umfasst mehrere Schritte, die in Abbildung \ref{guidance-channel} illustriert sind.
+Die Erstellung eines \glqq Guidance Channels\grqq \ umfasst mehrere Schritte, die in Abbildung \ref{Guidance Channel} illustriert sind.
 
 \begin{figure}
 	\centering
@@ -40,11 +40,11 @@ Die Erstellung eines \glqq Guidance-Channels\grqq \ umfasst mehrere Schritte, di
 	\begin{subfigure}{0.3\textwidth}
 		\centering
 		\includegraphics[width=0.8\textwidth]{images/guidance-channel-3}
-		\caption{\glqq Guidance-Channel\grqq}
+		\caption{\glqq Guidance Channel\grqq}
 	\end{subfigure}
 	
-	\caption{Erstellung eines \glqq Guidance-Channels\grqq \ \cite{SelfTuning}.}
-	\label{guidance-channel}
+	\caption{Erstellung eines \glqq Guidance Channels\grqq \ \cite{SelfTuning}.}
+	\label{Guidance Channel}
 \end{figure}
 
 Zunächst werden aus dem Beispielmuster Merkmale mit Hilfe eines Kantendetektors extrahiert.
@@ -54,41 +54,41 @@ Mittels Otsus Schwellenwertverfahren (vgl. \cite{Otsu}) wird dazu automatisiert 
 Anschließend kann aus dem binarisierten Kantenbild ein Distanzbild bestimmt werden.
 Dazu wird mittels MATLABs \texttt{bwdist}-Methode die euklidische Distanz jedes Pixels zu seiner nächstgelegenen Kante berechnet.
 Das bedeutet, dass in der Kantenbildmatrix die Distanz von jedem Eintrag mit einer $0$ (keine Kante) zu dem räumlich nächstgelegenen Eintrag mit einer $1$ (Kante) bestimmt wird und in einer neuen Matrix bzw. einem neuen Bild gespeichert wird (dem Distanzbild).
-Anschließend wird das Distanzbild entsprechend zum benutzten Farbraum normiert, so dass dessen Werte zu den restlichen Werten des Beispielmusters passen.
-Das normierte Distanzbild wird schließlich als \glqq Guidance-Channel\grqq \ bzw. als vierter Kanal im Beispielmuster gespeichert (vgl. \cite{SelfTuning}).
+Anschließend wird das Distanzbild entsprechend zum benutzten Farbraum normiert, sodass dessen Werte zu den restlichen Werten des Beispielmusters passen.
+Das normierte Distanzbild wird schließlich als \glqq Guidance Channel\grqq \ bzw. als vierter Kanal im Beispielmuster gespeichert (vgl. \cite{SelfTuning}).
 
-Der \glqq Guidance-Channel\grqq \ kann schließlich ohne spezielle Anpassung der Texturoptimierung  für die Synthese berücksichtigt werden.
+Der \glqq Guidance Channel\grqq \ kann schließlich ohne spezielle Anpassung der Texturoptimierung  für die Synthese berücksichtigt werden.
 Dazu müssen lediglich die Vektoren $\textbf{t}_p$ und $\textbf{x}_p$ den vierten Kanal für ihre Nachbarschaften mit aufnehmen.
-Dann liefert $d(\textbf{t}_p, \textbf{x}_p)$ (vgl. (\ref{nachbarschaftssuche})) ein Ähnlichkeitsmaß zwischen Beispielmuster und Textur unter zusätzlicher Be\-rück\-sich\-ti\-gung des \glqq Guidance-Channels\grqq \ \cite{SelfTuning}.
+Dann liefert $d(\textbf{t}_p, \textbf{x}_p)$ (vgl. (\ref{nachbarschaftssuche})) ein Ähnlichkeitsmaß zwischen Beispielmuster und Textur unter zusätzlicher Be\-rück\-sich\-ti\-gung des \glqq Guidance Channels\grqq \ \cite{SelfTuning}.
 
-Es zeigt sich jedoch in der Praxis, dass die feste Gewichtung des \glqq Guidance-Channels\grqq \ zu Problemen führen kann.
+Es zeigt sich jedoch in der Praxis, dass die feste Gewichtung des \glqq Guidance Channels\grqq \ zu Problemen führen kann.
 Durch das Hinzufügen eines vierten Kanals verringert sich die Fähigkeit der Synthese, unterschiedliche Materialen bzw. unterschiedliche Farben zwischen einer Kante zu unterscheiden.
-Abbildung \ref{guidance-channel-weight} erklärt dieses Problem anhand eines Beispiels.
+Abbildung \ref{Guidance Channel-weight} erklärt dieses Problem anhand eines Beispiels.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.5\textwidth]{images/guidance-channel-weight}
 	\caption{
-		Synthese einer Textur bei fester Gewichtung des \glqq Guidance-Channels\grqq \ führt zu schwachen Resultaten bei unterschiedlichen Farbverteilungen an den Kanten.
-		Einzelne Kacheln vermischen sich in ihren Farben, da ihr Beitrag zum Gesamtresultat im Vergleich zum \glqq Guidance-Channel\grqq \ zu gering ist \cite{SelfTuning}.
+		Synthese einer Textur bei fester Gewichtung des \glqq Guidance Channels\grqq \ führt zu schwachen Resultaten bei unterschiedlichen Farbverteilungen an den Kanten.
+		Einzelne Kacheln vermischen sich in ihren Farben, da ihr Beitrag zum Gesamtresultat im Vergleich zum \glqq Guidance Channel\grqq \ zu gering ist \cite{SelfTuning}.
 	}
-	\label{guidance-channel-weight}
+	\label{Guidance Channel-weight}
 \end{figure}
 
 Um diesem Problem entgegenzuwirken wird eine \emph{adaptive Gewichtung} des \glqq Gui\-dance-Channels\grqq \ genutzt.
-Die adaptive Gewichtung ordnet dem \glqq Guidance-Channel\grqq \ ein geringeres Gewicht zu, wenn sich die Farben in der räumlichen Nachbarschaft des betrachteten Pixels im Beispielmuster stark unterscheiden.
+Die adaptive Gewichtung ordnet dem \glqq Guidance Channel\grqq \ ein geringeres Gewicht zu, wenn sich die Farben in der räumlichen Nachbarschaft des betrachteten Pixels im Beispielmuster stark unterscheiden.
 Damit kann der Vorteil der Berücksichtigung von nicht-lokalen Informationen weiterhin genutzt werden.
 Die Gewichtung wird jedoch verringert, falls sie für die Aufrechterhaltung der Qualität der synthetisierten Textur von Nöten ist.
 
 Dazu werden zuerst die Pixelfarben in der direkten Nachbarschaft eines Pixels im Beispielmuster in einer Dichte-Karte gesammelt \cite{SelfTuning}.
 Mittels dieser Karte kann schließlich entschieden werden, ob sich die Farben in der betrachteten Nachbarschaft stark unterscheiden.
 Dies ist zum Beispiel der Fall, wenn sich mehrere Hügel in der Dichte-Karte wiederfinden.
-Unterscheiden sich die Farben nicht, so kann ein hohes Gewicht für den \glqq Guidance-Channel\grqq \ gewählt werden.
+Unterscheiden sich die Farben nicht, so kann ein hohes Gewicht für den \glqq Guidance Channel\grqq \ gewählt werden.
 Andernfalls wird ein etwas zurückhaltenderes Gewicht gewählt \cite{SelfTuning}.
 
 \subsection{Auffällige Wiederholungen}
 
-Bisherige Verfahren garantieren auf Grund der \glqq Markov-Random-Field\grqq -Eigenschaft nur eine lokale Ähnlichkeit zum Beispielmuster.
+Bisherige Verfahren garantieren auf Grund der \glqq Markov Random Field\grqq -Eigenschaft nur eine lokale Ähnlichkeit zum Beispielmuster.
 Ein kleiner Ausschnitt aus der Textur ist ähnlich zu einem kleinen Ausschnitt des Beispielmusters.
 Das führt unmittelbar zu dem Problem, dass sich bestimmte Ausschnitte in der synthetisierten Textur häufig wiederholen, wogegen sich andere Ausschnitte des Beispielmusters nur sehr selten in der Textur wiederfinden.
 Zum einen wird dadurch nicht die komplette Vielfalt des Beispielmusters ausgeschöpft und es wird demnach keine globale Ähnlichkeit zum Beispielmuster erreicht werden.

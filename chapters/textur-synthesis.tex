@@ -16,7 +16,7 @@ Diese Charakterisierung ist dabei unabhängig von der Position des betrachteten 
 Die Intuition dieser Eigenschaft lässt sich anhand von einem Beispiel verdeutlichen (vgl. Abbildung \ref{mrf}).
 Einem Betrachter liegt ein Bild vor, welches er aber nur durch ein kleines bewegliches Fenster betrachten kann.
 Er sieht demnach nie das komplette Bild auf einmal, kann aber durch Bewegungen seines Fensters einzelne Bereiche des Bildes entdecken und erschließen.
-Das Bild ist dann stationär, falls es unter verschiedenen Ausschnitten immer ähnlich erscheint (eine geeignete Fenstergröße vorausgesetzt).
+Das Bild ist stationär, falls es unter verschiedenen Ausschnitten immer ähnlich erscheint (eine geeignete Fenstergröße vorausgesetzt).
 Das Bild ist lokal, falls jeder Pixel in der Mitte eines Fensters über die umliegenden Pixel in seinem Fenster bestimmt werden kann \cite{StateOfTheArt}.
 
 \begin{figure}
@@ -79,7 +79,7 @@ Die Nachbarschaftssuche basiert im Allgemeinen auf der kleinsten quadrierten far
 	\min d(\textbf{t}_i, \textbf{x}_j) = \lVert \textbf{t}_i - \textbf{x}_j \rVert^2\text{.}
 \end{equation}
 $\textbf{t}_i$ beziehungsweise $\textbf{x}_j$ beschreiben dabei die Farben einer Nachbarschaft der Größe $N \times N$ als Vektor um den Pixel $i$ in der Textur $T$ respektive um den Pixel $j$ in dem Beispielmuster $X$.
-Für jede Nachbarschaft $\textbf{t}_i$ ist dann ihre ähnlichste Nachbarschaft $\textbf{x}_j$ im Beispielmuster gefunden, wenn $d(\textbf{t}_i, \textbf{x}_j)$ minimal ist \cite{TextureOptimization}.
+Für jede Nachbarschaft $\textbf{t}_i$ ist ihre ähnlichste Nachbarschaft $\textbf{x}_j$ im Beispielmuster gefunden, wenn $d(\textbf{t}_i, \textbf{x}_j)$ minimal ist \cite{TextureOptimization}.
 
 Aufgrund der Ähnlichkeiten zwischen lokalen Nachbarschaften im Beispielmuster und der Textur wird garantiert, dass die synthetisierte Textur Gemeinsamkeiten mit dem Beispielmuster aufweist \cite{StateOfTheArt}.
 
