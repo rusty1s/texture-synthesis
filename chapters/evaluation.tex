@@ -16,7 +16,36 @@ Texturoptimierung & \textbf{386s} & 438s & 204s & 1019s \\
 
 Zur Evaluation des Verfahrens wurden für die Beispielmuster die verschiedensten Arten von Texturen gewählt.
 Diese reichen von regelmäßigen zu fast regelmäßigen und völlig unregelmäßigen Texturen über Texturen mit einer Varianz an unterschiedlich großen Details.
-Abbildung \ref{examples} zeigt eine Auswahl der synthetisierten Texturen, einmal ohne und einmal mit den vorgestellten Verbesserungen.
+Abbildung 10 zeigt eine Auswahl der synthetisierten Texturen, einmal ohne und einmal mit den vorgestellten Verbesserungen.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.9\textwidth]{images/textur-sequence-1}
+	\label{textursequenzen}
+	\caption{
+	\glqq Stress-Test\grqq \ der Textursynthese mittels der Erstellung von Textursequenzen \cite{SelfTuning}.
+	Die Abbildung zeigt die erste, dritte und siebte Iteration der Texturoptimierung, einmal ohne (oben) und einmal mit Verbesserungen (unten).
+	Die Textursynthese ohne Verbesserungen unterliegt ziemlich schnell der \glqq Markov Random Field\grqq -Eigenschaft und verfällt in ein Muster ohne globale Struktur.
+	Die verbesserte Texturoptimierung dagegen bleibt auch nach der siebten Iteration relativ stabil.
+	Unsauberkeiten zeigen sich dabei lediglich in den verformten Kanten.
+	}
+\end{figure}
+
+\cite{SelfTuning} stellen ebenso einen neuen Ansatz namens \emph{Textursequenzen} vor, um die Qualität der Ergebnisse eines Textursynthese-Verfahrens objektiv zu bewerten.
+Textursequenzen bilden dabei eine Art \glqq Stress-Test\grqq.
+Dafür wird die Textursynthese iterativ mit der synthetisierten Textur als Eingabe mehrfach wiederholt.
+Das erlaubt die Überprüfung der Stabilität einer Textursynthese.
+Regelmäßigkeiten, großflächige Strukturen und globale Ähnlichkeiten einer Textur sollen dabei im besten Fall auch über mehrere Iterationen erhalten bleiben.
+Da Textursynthese-Verfahren stets einem gewissen Fehler unterliegen und dieser Fehler über das iterative Verfahren der Textursequenzen stets an die nächste Textur weiterpropagiert wird, ist auf Dauer zu erwarten, dass die erstellte Textur qualitative Abstriche in Kauf nehmen muss.
+Das Verfahren aus \cite{SelfTuning} zeigt dennoch auch nach 7 Iterationen im Vergleich zu anderen Texturoptimierungen erstaunlich gute Ergebnisse (vgl. Abbildung \ref{textursequenzen}).
+
+Es ist ebenfalls anzumerken, dass das Verfahren aus \cite{SelfTuning} völlig automatisiert arbeitet und außer einem Beispielmuster und der Eingabe einer gewünschten Texturgröße keine weiteren Konfigurationsparameter von Nöten sind.
+Damit ist insbesondere das Ziel erreicht, Benutzern einen einfachen aber qualitativ hochwertigen Weg für die Erstellung von Texturen zu bieten.
+
+Obwohl mit den vorgestellten Verbesserungsmöglichkeiten bereits qualitativ hochwertige Texturen synthetisiert werden können, so bleibt dennoch genug Spielraum für weitere Verbesserungen.
+So enthalten viele der synthetisierten Textur weiterhin kleine Artefakte in den Strukturen der Textur.
+Es lässt sich weiterhin beobachten, dass der Kantendetektor für die Erstellung des \glqq Guidance Channels\grqq \ einen negativen Einfluss auf Texturen mit großen, aber schwachen Kanten ausübt.
+Weiterhin ist die Initialisierungsstrategie aktuell nur begrenzt auf das Erkennen einer einzigen Translationssymmetrie und erlaubt damit lediglich das Bewahren simpler Regelmäßigkeiten (vgl. \cite{SelfTuning}).
 
 \begin{figure}
 \centering
@@ -89,35 +118,6 @@ Abbildung \ref{examples} zeigt eine Auswahl der synthetisierten Texturen, einmal
 	\caption*{($3$) Die verbesserte Textursynthese erkennt die Regelmäßigkeiten in den Steinkacheln und bewahrt diese ohne Artefakte oder Unnatürlichkeiten.}
 \end{subfigure}
 
-\label{examples}
+\label{3-examples}
 \caption{Beispielmuster und ihre daraus synthetisierten Texturen, einmal ohne und einmal mit den vorgestellten Verbesserungen \cite{SelfTuning}.}
 \end{figure}
-
-\cite{SelfTuning} stellen ebenso einen neuen Ansatz namens \emph{Textursequenzen} vor, um die Qualität der Ergebnisse eines Textursynthese-Verfahrens objektiv zu bewerten.
-Textursequenzen bilden dabei eine Art \glqq Stress-Test\grqq.
-Dafür wird die Textursynthese iterativ mit der synthetisierten Textur als Eingabe mehrfach wiederholt.
-Das erlaubt die Überprüfung der Stabilität einer Textursynthese.
-Regelmäßigkeiten, großflächige Strukturen und globale Ähnlichkeiten einer Textur sollen dabei im besten Fall auch über mehrere Iterationen erhalten bleiben.
-Da Textursynthese-Verfahren stets einem gewissen Fehler unterliegen und dieser Fehler über das iterative Verfahren der Textursequenzen stets an die nächste Textur weiterpropagiert wird, ist auf Dauer zu erwarten, dass die erstellte Textur qualitative Abstriche in Kauf nehmen muss.
-Das Verfahren aus \cite{SelfTuning} zeigt dennoch auch nach 7 Iterationen im Vergleich zu anderen Texturoptimierungen erstaunlich gute Ergebnisse (vgl. Abbildung \ref{textursequenzen}).
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.9\textwidth]{images/textur-sequence-1}
-	\label{textursequenzen}
-	\caption{
-	\glqq Stress-Test\grqq \ der Textursynthese mittels der Erstellung von Textursequenzen \cite{SelfTuning}.
-	Die Abbildung zeigt die erste, dritte und siebte Iteration der Texturoptimierung, einmal ohne (oben) und einmal mit Verbesserungen (unten).
-	Die Textursynthese ohne Verbesserungen unterliegt ziemlich schnell der \glqq Markov Random Field\grqq -Eigenschaft und verfällt in ein Muster ohne globale Struktur.
-	Die verbesserte Texturoptimierung dagegen bleibt auch nach der siebten Iteration relativ stabil.
-	Unsauberkeiten zeigen sich dabei lediglich in den verformten Kanten.
-	}
-\end{figure}
-
-Es ist ebenfalls anzumerken, dass das Verfahren aus \cite{SelfTuning} völlig automatisiert arbeitet und außer einem Beispielmuster und der Eingabe einer gewünschten Texturgröße keine weiteren Konfigurationsparameter von Nöten sind.
-Damit ist insbesondere das Ziel erreicht, Benutzern einen einfachen aber qualitativ hochwertigen Weg für die Erstellung von Texturen zu bieten.
-
-Obwohl mit den vorgestellten Verbesserungsmöglichkeiten bereits qualitativ hochwertige Texturen synthetisiert werden können, so bleibt dennoch genug Spielraum für weitere Verbesserungen.
-So enthalten viele der synthetisierten Textur weiterhin kleine Artefakte in den Strukturen der Textur.
-Es lässt sich weiterhin beobachten, dass der Kantendetektor für die Erstellung des \glqq Guidance Channels\grqq \ einen negativen Einfluss auf Texturen mit großen, aber schwachen Kanten ausübt.
-Weiterhin ist die Initialisierungsstrategie aktuell nur begrenzt auf das Erkennen einer einzigen Translationssymmetrie und erlaubt damit lediglich das Bewahren simpler Regelmäßigkeiten (vgl. \cite{SelfTuning}).
