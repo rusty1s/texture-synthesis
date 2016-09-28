@@ -1,22 +1,27 @@
 \documentclass[12pt]{article}
 
 \usepackage[a4paper,left=3.5cm,right=2.5cm,bottom=3.5cm,top=3cm]{geometry}
+\renewcommand{\baselinestretch}{1.25}
 
 \usepackage[utf8]{inputenc}
 \usepackage[english,german]{babel}
-\renewcommand{\baselinestretch}{1.25}
 \usepackage{amsmath}
 \usepackage{todonotes}
-\usepackage{newclude}
 \usepackage{graphicx}
 \usepackage{subcaption}
-
 \usepackage[margin=0pt,font=small,labelfont=bf]{caption}
+\usepackage[absolute,overlay]{textpos}
+\setlength{\TPHorizModule}{1mm}
+\setlength{\TPVertModule}{\TPHorizModule}
+\textblockorigin{0mm}{0mm}
+\usepackage{fix-cm}
+\usepackage{setspace}
 
 \begin{document}
 
 \pagenumbering{arabic}
 
+\include{chapters/title}
 \include{chapters/introduction}
 \include{chapters/textur-synthesis}
 \include{chapters/weaknesses}
