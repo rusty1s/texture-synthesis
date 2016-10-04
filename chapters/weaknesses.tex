@@ -1,19 +1,19 @@
 \section{Schwächen der Textursynthese und deren Verbesserungsmöglichkeiten}
 
 Bisherige Ansätze demonstrieren ihre Algorithmen nur für Beispielmustern mit geringen Auflösungen bis zu $128^2$ Pixeln \cite{SelfTuning}.
-Für diese Auflösungen funktionieren die vorgestellten Ansätze gut, denn die entsprechenden Beispielmuster enthalten auf Grund ihrer geringen Größe oftmals nur kleine Details, die sich leicht vervielfachen lassen, ohne dabei unnatscürlich auszusehen.
+Für diese Auflösungen funktionieren die vorgestellten Ansätze gut, denn die entsprechenden Beispielmuster enthalten auf Grund ihrer geringen Größe oftmals nur kleine Details, die sich leicht vervielfachen lassen, ohne dabei unnatürlich auszusehen.
 Höher aufgelöste Beispielmuster leiden dagegen an der \glqq Markov Random Field\grqq -Eigenschaft.
 Es werden stets nur kleine lokale Ausschnitte eines Beispielmusters betrachtet, wodurch die globale Ähnlichkeit zu dem benutzten Muster völlig außer Acht gelassen wird.
 Folglich werden Texturen aus hochauflösenden Beispielmustern synthetisiert, die den Erwartungen qualitativ hochwertigen Texturen nur selten gerecht werden.
 
 In diesem Kapitel wird eine Textursynthese beschrieben, die sich der Texturoptimierung annimmt und sie mit mehreren Verbesserungen ausstattet, um die bisherigen Probleme der Textursynthese zu überwinden.
 Dazu zählen insbesondere das Erhalten von großflächigen Strukturen aus dem Beispielmuster, das Vermeiden von auffälligen Wiederholungen in der synthetisierten Textur und das Erkennen und Bewahren von Regelmäßigkeiten.
-Das Verfahren greift dabei Schlüsselideen vorangegangener Verbesserungsmöglichkeiten auf und modifiziert sie in so fern, sodass die Texturoptimierung weiterhin völlig autonom arbeiten kann und keine individuellen, benutzerdefinierten Anpassungen für unterschiedliche Beispielmuster von Nöten sind.
+Das Verfahren greift dabei insbesondere Ideen vorangegangener Verbesserungsmöglichkeiten auf und modifiziert sie, sodass die Texturoptimierung weiterhin völlig autonom arbeiten kann und keine individuellen, benutzerdefinierten Anpassungen für unterschiedliche Beispielmuster von Nöten sind.
 
 \subsection{Großflächige Strukturen}
 
 Texturen bzw. Beispielmuster enthalten oft Details verschiedener Größen.
-So enthält eine Steintextur winzige Details in ihrer Oberfläche, aber wohlmöglich auch größere Strukturen wie etwa Risse oder Kanten.
+So enthält eine Steintextur winzige Details in ihrer Oberfläche, aber womöglich auch größere Strukturen wie etwa Risse oder Kanten.
 Diese Strukturen mit großer Ausdehnung werden in der bisherigen Synthese garnicht erst berücksichtigt.
 
 Ein möglicher Ansatz dieses Problem zu lösen ist der Einsatz eines \emph{\glqq Guidance Channels\grqq} \ \cite{SelfTuning}.
@@ -98,7 +98,7 @@ Das führt unmittelbar dazu, dass die Ergebnisse der Textursynthese den Anforder
 Zur Lösung dieses Problems können dem Auswahlprozess $\min d(\textbf{t}_p, \textbf{x}_p)$ (vgl. (\ref{nachbarschaftssuche}), (\ref{zielfunktion})) der ähnlichsten Nachbarschaften im Beispielmuster zu den Nachbarschaften in der zu optimierenden Textur bestimmten Einschränkungen (\emph{Constraints}) unterliegen.
 \cite{SelfTuning} stellt in diesem Zuge das \emph{\glqq Spatial-Uniformity\grqq} -Constraint vor, mit dem Ziel, eine globale Ähnlichkeit zum Beispielmuster zu garantieren.
 
-Das \glqq Spatial Uniformity\grqq -Constraint soll den Auswahlprozess dazu ermutigen, alle Regionen des Beispielmuster in gleichmäßigem Verhältnis zueinander in der synthetisierten Textur zu berücksichtigen, in dem Regionen bei der Auswahl bestraft werden, die bereits zu oft verwendet wurden.
+Das \glqq Spatial Uniformity\grqq -Constraint soll den Auswahlprozess dazu ermutigen, alle Regionen des Beispielmusters in gleichmäßigem Verhältnis zueinander in der synthetisierten Textur zu berücksichtigen, in dem Regionen bei dem Auswahlprozess bestraft werden, die bereits zu oft verwendet wurden.
 Damit unterscheidet es sich insbesondere von dem \emph{\glqq Bidirectional Similarity\grqq} -Constraint, welches lediglich garantiert, dass jede Region des Beispielmusters mindestens einmal für die Synthese der Textur benutzt wird (vgl. \cite{BidirectionalSimilarity}) \cite{SelfTuning}.
 Für diese Aufgabe wird für jede Iteration der Texturoptimierung eine Vorkommen-Karte $\Omega$ mit
 
@@ -145,7 +145,7 @@ $\lambda = 10$ kontrolliert dabei die Gewichtung des Bestrafungsterms (vgl. \cit
 
 \subsection{Regelmäßigkeiten}
 
-Bisherige Verfahren scheitern daran regelmäßigen oder fast regelmäßigen Strukturen aus dem Beispielmuster korrekt zu reproduzieren.
+Bisherige Verfahren scheitern daran, regelmäßige oder fast regelmäßige Strukturen aus dem Beispielmuster korrekt zu reproduzieren.
 So ist mit den bisherigen Ansätzen und Verbesserungsmöglichkeiten keinesfalls garantiert, dass Regelmäßigkeiten aus einem Beispielmuster wie etwa Steinkacheln erhalten bleiben.
 Das liegt insbesondere an der in Kapitel \ref{chapter-texturoptimierung} erwähnten zufällig generierten Initialisierungstextur \cite{SelfTuning}.
 Diese gewährt zwar, dass der Prozess der Synthese mit der korrekten Farbverteilung des Beispielmusters startet, jedoch geht dabei jede globale Struktur, die das Beispielmuster (möglicherweise) aufweist, verloren \cite{SelfTuning}.
@@ -189,7 +189,7 @@ Die Texturoptimierung garantiert dann auf Grund der ähnlichsten Nachbarschaftss
 \end{figure}
 
 Die Strategie zur Erzeugung der Initialisierungstextur unterteilt sich in zwei Schritte.
-Zuerst muss die Regelmäßigkeit des Beispielsmuster gefunden werden.
+Zuerst muss die Regelmäßigkeit des Beispielsmusters gefunden werden.
 Dazu sucht man im Beispielmuster nach zwei linear unabhängigen \emph{Gitter erzeugenden Vektoren}, die durch Konkatenation ihrer selbst ein Gitter aufspannen (vgl. Abbildung \ref{regular}$d$).
 Anschließend muss auf Basis dieser gefundenen Vektoren die Textur entsprechend initialisiert werden \cite{SelfTuning}.
 
@@ -198,7 +198,7 @@ Dazu werden zunächst die interessantesten Merkmalspunkte aus dem Beispielmuster
 Anschließend wird für jedes Merkmal dessen ähnlichstes Merkmal ermittelt.
 Dabei werden nur diejenigen Paare für die weitere Berechnung behalten, die sich im Vergleich mit allen Paaren am ähnlichsten sind (vgl. \cite{SelfTuning}).
 Für die übrig gebliebenen Paare wird dessen Translation zueinander im Beispielmuster berechnet und in einem zweidimensionalen Koordinatensystem gespeichert.
-Aus den Endpunkten dieser Translationen im Koordinatensystem kann dann schließlich eine Dichte-Karte gewonnen werden, die die Häufigkeiten der einzelnen Endpunkte aller Translationen beschreiben.
+Aus den Endpunkten dieser Translationen im Koordinatensystem kann dann schließlich eine Dichte-Karte gewonnen werden, die die Häufigkeiten der einzelnen Endpunkte aller Translationen beschreibt.
 Hügel in der Dichte-Karte visualisieren dabei auffällige Regelmäßigkeiten von ähnlichen Punkten, die versetzt zueinander sind und die daher als visuelle Regelmäßigkeit im Beispielmuster interpretiert werden können.
 Die beiden gesuchten Gitter erzeugenden Vektoren können nun über ein Optimierungsproblem gefunden werden.
 Dabei soll das Gitter der beiden Vektoren die Hügel in der Karte optimal beschreiben.
@@ -207,11 +207,11 @@ Dabei soll das Gitter der beiden Vektoren die Hügel in der Karte optimal beschr
 \begin{equation*}
 	F_1 = \beta \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}\text{.}
 \end{equation*}
-Dabei beschreibt die \emph{Precision}-Term, in wie weit die beiden Vektoren mit den Hügeln in der Dichte-Karte zusammen passen.
+Dabei beschreibt der \emph{Precision}-Term, in wie weit die beiden Vektoren mit den Hügeln in der Dichte-Karte zusammen passen.
 Der \emph{Recall}-Term ermittelt, in wie weit alle Hügel in der Dichte-Karte abgedeckt werden.
 
 Nachdem die Regelmäßigkeit über die Berechnung der beiden Gitter erzeugenden Vektoren ermittelt wurde, kann letztendlich eine Textur initialisiert werden.
-Dafür wird das Beispielmuster in disjunkte Bereiche unterteilt, dessen Größe dem umschließenden Rechteck einer Gitterzelle entsprechen.
+Dafür wird das Beispielmuster in disjunkte Bereiche unterteilt, deren Größe dem umschließenden Rechteck einer Gitterzelle entsprechen.
 Diese Bereiche werden dann schließlich sukzessive von links nach rechts und von oben nach unten zufällig in die Textur kopiert \cite{SelfTuning}.
 
 Es zeigt sich, dass die aus dieser Initialisierungsstrategie gewonnenen Texturen Regelmäßigkeiten des Beispielmusters erfolgreich bewahren können.

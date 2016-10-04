@@ -1,6 +1,6 @@
 \section{Textursynthese}
 
-Die Textursynthese ist ein alternativer Ansatz für die Erstellung von Texturen, der es erlaubt, auch ohne spezielle Vorkenntnisse, qualitativ hochwertige Ergebnisse zu erzielen.
+Die Textursynthese ist ein alternativer Ansatz für die Erstellung von Texturen, der es erlaubt, auch ohne spezielle Vorkenntnisse qualitativ hochwertige Ergebnisse zu erzielen.
 Der Benutzer muss lediglich ein Beispielmuster und eventuell benötigte Konfigurationsparameter an die Textursynthese übergeben, die aus diesen Daten eine Textur synthetisiert \cite{StateOfTheArt}.
 Die resultierende Textur zeichnet sich dadurch aus, dass sie eine beliebige Größe annehmen kann, aber weiterhin sichtbare Ähnlichkeiten zu dem Beispielmuster aufweist ohne identisch zu ihm zu sein.
 Die Textursynthese kümmert sich dabei automatisiert und im Idealfall ohne technische Benutzereingaben um die Schwierigkeiten bei der Erstellung von Texturen.
@@ -8,9 +8,8 @@ Sie berücksichtigt die visuellen Charakteristiken des Beispielmusters und verme
 
 \subsection{\glqq Markov Random Fields\grqq -Eigenschaft}
 
-Die \emph{\glqq Markov Random Field\grqq} -Eigenschaft ist eine der populärsten Eigenschaften, die vielen Verfahren der Textursynthese zu Grunde liegt \cite{StateOfTheArt}.
-Sie motiviert eine Metrik, die Verwendung findet, um die Ähnlichkeit zwischen dem Beispielmuster und der zu synthetisierenden Textur zu beschreiben \cite{TextureOptimization}.
-Die \glqq Markov Random Field\grqq -Eigenschaft beschreibt dabei die Synthese als eine Aneinanderreihung von \emph{lokalen} und \emph{stationären} Prozessen \cite{StateOfTheArt}.
+Die \emph{\glqq Markov Random Fields\grqq} -Eigenschaft liegt den meisten Verfahren der Textursynthese zu Grunde \cite{StateOfTheArt}.
+Sie beschreibt dabei die Synthese als eine Aneinanderreihung von \emph{lokalen} und \emph{stationären} Prozessen \cite{StateOfTheArt}.
 Das bedeutet, dass jede Farbe eines Pixels in der Textur ausschließlich über die Pixel in seiner direkten räumlichen Nachbarschaft charakterisiert werden kann (lokal).
 Diese Charakterisierung ist dabei unabhängig von der Position des betrachteten Pixels (stationär) \cite{TextureOptimization}.
 Die Intuition dieser Eigenschaft lässt sich anhand von einem Beispiel verdeutlichen (vgl. Abbildung \ref{mrf}).
@@ -69,8 +68,7 @@ Das Bild ist lokal, falls jeder Pixel in der Mitte eines Fensters über die umli
 \end{figure}
 
 Basierend auf dieser Eigenschaft kann der Prozess der Textursynthese spezifiziert werden.
-Sei ein Beispielmuster gegeben.
-Dann lässt sich daraus eine Textur synthetisieren, sodass für jeden synthetisierten Pixel dessen räumliche Nachbarschaft zu mindestens einer Nachbarschaft im Beispielmuster ähnlich ist \cite{StateOfTheArt}.
+Wenn ein Beispielmuster gegeben ist, dann lässt sich daraus eine Textur synthetisieren, sodass für jeden synthetisierten Pixel dessen räumliche Nachbarschaft zu mindestens einer Nachbarschaft im Beispielmuster ähnlich ist \cite{StateOfTheArt}.
 Die Größe der betrachteten Nachbarschaften ist dabei in der Regel ein benutzerdefinierter Parameter.
 Die Nachbarschaftssuche basiert im Allgemeinen auf der kleinsten quadrierten farblichen Abweichung 
 
@@ -176,10 +174,10 @@ Global optimierende Verfahren setzen dort an und versuchen, diesen Fehler so ger
 
 Die \emph{Texturoptimierung} ist ein global wachsendes Verfahren und vereint dabei Eigenschaften der pixel- sowie regionsbasierten Verfahren.
 Ähnlich zur pixelbasierten Synthese generiert die Texturoptimierung eine Textur auf Grundlage von Pixeln (anstatt von Regionen).
-Dabei werden die Pixeln jedoch nicht einzeln betrachtet, sondern es werden stets alle Pixel gemeinsam zur Berechnung der Textur mit einbezogen.
-Ebenso verhält sich das Setzen einer Pixelfarbe nicht \emph{gierig} \cite{StateOfTheArt}.
+Dabei werden die Pixel jedoch nicht einzeln betrachtet, sondern es werden stets alle Pixel gemeinsam zur Berechnung der Textur mit einbezogen.
+Ebenso verhält sich das Setzen einer Pixelfarbe nicht \glqq gierig\grqq \ \cite{StateOfTheArt}.
 Die Texturoptimierung beschreibt einen Optimierungsprozess, der die gesamte Textur durch sukzessives Ausführen des Algorithmus verbessert.
-Damit können sich die Pixelfarben der Textur auch im späteren Verlauf der Optimierung ändern, solange jene Änderung zur Verbesserung bzw. Optimierung der Textur beiträgt.
+Damit können sich die Pixelfarben der Textur auch im späteren Verlauf der Optimierung ändern, solange die Änderung zur Verbesserung bzw. Optimierung der Textur beiträgt.
 
 Die globale Optimierung einer Textur basiert auf einer \emph{Initialisierungstextur}.
 Falls eine Initialisierungstextur nicht explizit übergeben wird, so wird diese üb\-lich\-er\-wei\-se gleichmäßig aus zufälligen Regionen des Beispielmusters generiert \cite{TextureOptimization}.

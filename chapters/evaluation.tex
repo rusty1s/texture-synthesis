@@ -2,7 +2,7 @@
 
 Die vorgestellte Methode der Texturoptimierung aus \cite{SelfTuning} wurde in MATLAB implementiert.
 Die Laufzeit des Verfahrens hängt dabei von dem ausgewählten Beispielmuster und der Größe der zu synthetisierten Textur ab.
-Über 33 Beispielmuster mit einer Texturgröße von $1024^2$ Pixeln auf einem 2.93GHz Intel Core i7 870 ergeben sich dabei folgende Laufzeiten (vgl. \cite{SelfTuning}):
+Für 33 Beispielmuster mit einer Texturgröße von $1024^2$ Pixeln auf einem 2.93GHz Intel Core i7 870 ergeben sich dabei folgende Laufzeiten (vgl. \cite{SelfTuning}):
 \\
 
 \begin{tabular}{l|rrrr}
@@ -37,15 +37,15 @@ Dafür wird die Textursynthese iterativ mit der synthetisierten Textur als Einga
 Das erlaubt die Überprüfung der Stabilität einer Textursynthese.
 Regelmäßigkeiten, großflächige Strukturen und globale Ähnlichkeiten einer Textur sollen dabei im besten Fall auch über mehrere Iterationen erhalten bleiben.
 Da Textursynthese-Verfahren stets einem gewissen Fehler unterliegen und dieser Fehler über das iterative Verfahren der Textursequenzen stets an die nächste Textur weiterpropagiert wird, ist auf Dauer zu erwarten, dass die erstellte Textur qualitative Abstriche in Kauf nehmen muss.
-Das Verfahren aus \cite{SelfTuning} zeigt dennoch auch nach 7 Iterationen im Vergleich zu anderen Texturoptimierungen erstaunlich gute Ergebnisse (vgl. Abbildung \ref{textursequenzen}).
+Das Verfahren aus \cite{SelfTuning} zeigt dennoch auch nach 7 Iterationen im Vergleich zu anderen Texturoptimierungen erstaunlich gute Ergebnisse (vgl. Abbildung 9).
 
 Es ist ebenfalls anzumerken, dass das Verfahren aus \cite{SelfTuning} völlig automatisiert arbeitet und außer einem Beispielmuster und der Eingabe einer gewünschten Texturgröße keine weiteren Konfigurationsparameter von Nöten sind.
 Damit ist insbesondere das Ziel erreicht, Benutzern einen einfachen aber qualitativ hochwertigen Weg für die Erstellung von Texturen zu bieten.
 
 Obwohl mit den vorgestellten Verbesserungsmöglichkeiten bereits qualitativ hochwertige Texturen synthetisiert werden können, so bleibt dennoch genug Spielraum für weitere Verbesserungen.
-So enthalten viele der synthetisierten Textur weiterhin kleine Artefakte in den Strukturen der Textur.
-Es lässt sich weiterhin beobachten, dass der Kantendetektor für die Erstellung des \glqq Guidance Channels\grqq \ einen negativen Einfluss auf Texturen mit großen, aber schwachen Kanten ausübt.
-Weiterhin ist die Initialisierungsstrategie aktuell nur begrenzt auf das Erkennen einer einzigen Translationssymmetrie und erlaubt damit lediglich das Bewahren simpler Regelmäßigkeiten (vgl. \cite{SelfTuning}).
+So enthalten viele der synthetisierten Texturen weiterhin kleine Artefakte in den Strukturen der Textur.
+Es lässt sich ebenso beobachten, dass der Kantendetektor für die Erstellung des \glqq Guidance Channels\grqq \ einen negativen Einfluss auf Texturen mit großen, aber schwachen Kanten ausübt.
+Weiterhin ist die Initialisierungsstrategie aktuell begrenzt auf das Erkennen einer einzigen Translationssymmetrie und erlaubt damit lediglich das Bewahren simpler Regelmäßigkeiten (vgl. \cite{SelfTuning}).
 
 \begin{figure}
 \centering
